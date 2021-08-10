@@ -1,0 +1,30 @@
+name: CI build
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  check-links:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Check all links in *.md files
+        id: lychee
+        uses: lycheeverse/lychee-action@v1.0.8
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: >-
+            -v -n "*.md" "**/*.md"
+            --exclude "https://ingest.us0.signalfx.com.*"
+            --exclude "http://localhost*"
+
+      - name: Fail if there were link errors
+        run: exit ${{ steps.lychee.outputs.exit_code }}
