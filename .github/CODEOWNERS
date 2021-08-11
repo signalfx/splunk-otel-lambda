@@ -1,0 +1,17 @@
+#  https://help.github.com/en/articles/about-code-owners
+#
+# Global Owners
+* @signalfx/gdi-lambda-maintainers @signalfx/gdi-lambda-approvers
+
+.github/CODEOWNERS @signalfx/gdi-lambda-maintainers
+
+#####################################################
+#
+# Docs reviewers
+#
+#####################################################
+
+*.md    @signalfx/gdi-lambda-maintainers @signalfx/gdi-lambda-approvers @signalfx/docs
+*.rst   @signalfx/gdi-lambda-maintainers @signalfx/gdi-lambda-approvers @signalfx/docs
+docs/   @signalfx/gdi-lambda-maintainers @signalfx/gdi-lambda-approvers @signalfx/docs
+README* @signalfx/gdi-lambda-maintainers @signalfx/gdi-lambda-approvers @signalfx/docs @signalfx/gdi-specification-approvers @signalfx/gdi-specification-maintainers
