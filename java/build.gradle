@@ -1,0 +1,73 @@
+plugins {
+    id "java"
+    id "com.diffplug.spotless" version "5.2.0" apply false
+}
+
+group = 'com.splunk.public'
+description = "Splunk distro of OpenTelemetry Lambda"
+
+ext {
+    versions = [
+            opentelemetry: '1.5.0',
+            opentelemetryalpha: '1.5.0-alpha'
+    ]
+}
+
+apply plugin: 'java'
+apply plugin: 'com.diffplug.spotless'
+apply from: "$rootDir/gradle/spotless.gradle"
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+task copyDependencies(type: Copy) {
+    from configurations.default
+    into 'build/libs'
+}
+build.finalizedBy(copyDependencies)
+
+dependencies {
+    implementation(platform("io.opentelemetry:opentelemetry-bom:${versions.opentelemetry}"))
+    implementation(platform("io.opentelemetry:opentelemetry-bom-alpha:${versions.opentelemetryalpha}"))
+    // for SDK - tracer provider and span exporter factory; already contained by parent
+    compileOnly("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure")
+
+    // auto service (loaded by SDK)
+    annotationProcessor("com.google.auto.service:auto-service:1.0")
+    compileOnly("com.google.auto.service:auto-service:1.0")
+
+    // custom jaeger-thrift based exporter
+    implementation("io.opentelemetry:opentelemetry-exporter-jaeger-thrift")
+    implementation("io.jaegertracing:jaeger-thrift:1.5.0")
+
+    // supported exporters
+    // already in the parent
+    compileOnly("io.opentelemetry:opentelemetry-exporter-logging")
+    implementation("io.opentelemetry:opentelemetry-exporter-zipkin")
+    implementation("io.opentelemetry:opentelemetry-exporter-jaeger")
+
+    // lambda logging
+    implementation("com.amazonaws:aws-lambda-java-log4j2:1.2.0")
+    implementation("org.apache.logging.log4j:log4j-slf4j18-impl:2.13.0")
+    implementation("org.apache.logging.log4j:log4j-core:2.13.2")
+    implementation("org.apache.logging.log4j:log4j-api:2.13.0")
+}
+
+// need to exclude "parent" dependencies to avoid clash upon copy / zip of the final layer
+configurations.runtimeElements {
+    exclude group: 'io.opentelemetry', module: 'opentelemetry-api'
+    exclude group: 'io.opentelemetry', module: 'opentelemetry-sdk'
+    exclude group: 'io.opentelemetry', module: 'opentelemetry-semconv'
+    exclude group: 'org.slf4j', module: 'slf4j-api'
+    exclude group: 'com.google.code.gson'
+    exclude group: 'io.grpc'
+    exclude group: 'com.google.protobuf'
+    exclude group: 'com.google.guava'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
