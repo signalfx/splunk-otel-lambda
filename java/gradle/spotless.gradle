@@ -1,0 +1,17 @@
+spotless {
+  java {
+    googleJavaFormat()
+    licenseHeaderFile rootProject.file('gradle/spotless.license.java'), '(package|import|public)'
+    target 'src/**/*.java'
+  }
+  format 'misc', {
+    // not using '**/...' to help keep spotless fast
+    target '.gitignore', '*.md', 'src/**/.md', '*.sh'
+    indentWithSpaces()
+    trimTrailingWhitespace()
+    endWithNewline()
+  }
+}
+
+task formatCode(dependsOn: ['spotlessApply'])
+check.dependsOn 'spotlessCheck'
