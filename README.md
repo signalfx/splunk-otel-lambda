@@ -9,6 +9,7 @@
 </p>
 
 <p align="center">
+  <img alt="Beta" src="https://img.shields.io/badge/status-beta-informational?style=for-the-badge">
   <a href="https://github.com/signalfx/gdi-specification/releases/tag/v1.0.0">
     <img alt="Splunk GDI specification" src="https://img.shields.io/badge/GDI-1.0.0-blueviolet?style=for-the-badge">
   </a>
@@ -17,11 +18,11 @@
   </a>
 </p>
 
+# Splunk OpenTelemetry Lambda
 
+> :construction: This project is currently in **BETA**. It is **officially supported** by Splunk. However, breaking changes **MAY** be introduced.
 
----
-
-Splunk OTeL lambda is a downstream distribution of opentelemetry-lambda. Supported OpenTelemetry Lambda layers are preconfigured to use Splunk as the tracing backend (direct ingest or SmartAgent). Users can enhance their existing Lambda functions by adding Splunk-managed layer directly. Layer ARNs [are published here](https://github.com/signalfx/lambda-layer-versions/).
+Splunk OTeL Lambda is a downstream distribution of opentelemetry-lambda. Supported OpenTelemetry Lambda layers are preconfigured to use Splunk as the tracing backend (direct ingest or SmartAgent). Users can enhance their existing Lambda functions by adding Splunk-managed layer directly. Layer ARNs [are published here](https://github.com/signalfx/lambda-layer-versions/).
 
 ## Get started 
 
