@@ -22,7 +22,7 @@
 
 > :construction: This project is currently in **BETA**. It is **officially supported** by Splunk. However, breaking changes **MAY** be introduced.
 
-Splunk OTeL Lambda is a downstream distribution of opentelemetry-lambda. Supported OpenTelemetry Lambda layers are preconfigured to use Splunk as the tracing backend (direct ingest or SmartAgent). Users can enhance their existing Lambda functions by adding Splunk-managed layer directly. Layer ARNs [are published here](https://github.com/signalfx/lambda-layer-versions/).
+Splunk OpenTelemetry Lambda is a downstream distribution of the [OpenTelemetry Lambda](https://github.com/open-telemetry/opentelemetry-lambda). Supported OpenTelemetry Lambda layers are preconfigured to use Splunk as the tracing backend (direct ingest or SmartAgent). Users can enhance their existing Lambda functions by adding the Splunk-managed layer directly. Layer ARNs [are published here](https://github.com/signalfx/lambda-layer-versions/).
 
 ## Get started 
 
