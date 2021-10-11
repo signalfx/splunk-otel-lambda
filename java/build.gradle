@@ -4,13 +4,14 @@ plugins {
 }
 
 group = 'com.splunk.public'
-description = "Splunk distro of OpenTelemetry Lambda"
+description = "Splunk distribution of OpenTelemetry Lambda"
 
 ext {
     versions = [
-            opentelemetry: '1.5.0',
-            opentelemetryalpha: '1.5.0-alpha'
+            opentelemetry: '1.6.0',
+            opentelemetryalpha: '1.6.0-alpha'
     ]
+
 }
 
 apply plugin: 'java'
@@ -68,6 +69,8 @@ configurations.runtimeElements {
     exclude group: 'io.grpc'
     exclude group: 'com.google.protobuf'
     exclude group: 'com.google.guava'
+    exclude group: 'com.fasterxml.jackson.core'
+    exclude group: 'com.fasterxml.jackson.jr'
 }
 
 repositories {
