@@ -36,7 +36,7 @@ public class TracerProviderConfigurer implements SdkTracerProviderConfigurer {
   }
 
   private static void maybeEnableLoggingExporter(
-          SdkTracerProviderBuilder builder, ConfigProperties config) {
+      SdkTracerProviderBuilder builder, ConfigProperties config) {
     // don't install another instance if the user has already explicitly requested it.
     if (!loggingExporterIsAlreadyConfigured(config)) {
       builder.addSpanProcessor(SimpleSpanProcessor.create(new LoggingSpanExporter()));
