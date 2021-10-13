@@ -2,12 +2,12 @@
 
 # no metrics
 export OTEL_METRICS_EXPORTER=none
-# OTLP traces exporter
-export OTEL_TRACES_EXPORTER="${OTEL_TRACES_EXPORTER:-otlp}"
+# jts traces exporter
+export OTEL_TRACES_EXPORTER="${OTEL_TRACES_EXPORTER:-jaeger-thrift-splunk}"
+export OTEL_EXPORTER_JAEGER_ENDPOINT="${OTEL_EXPORTER_JAEGER_ENDPOINT:-https://ingest.us0.signalfx.com/v2/trace}"
 # tracecontext, baggage propagation
 export OTEL_PROPAGATORS="${OTEL_PROPAGATORS:-tracecontext,baggage}"
-# SA default endpoint - if using jaeger-thrift
-export OTEL_EXPORTER_JAEGER_ENDPOINT="${OTEL_EXPORTER_JAEGER_ENDPOINT:-http://127.0.0.1:9080/v1/trace}"
+# no sampling
 export OTEL_TRACES_SAMPLER="${OTEL_TRACES_SAMPLER:-always_on}"
 
 # disable non-lambda resource providers
