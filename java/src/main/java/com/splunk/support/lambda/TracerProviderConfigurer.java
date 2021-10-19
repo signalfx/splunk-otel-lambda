@@ -18,7 +18,8 @@ package com.splunk.support.lambda;
 
 import com.google.auto.service.AutoService;
 import io.opentelemetry.exporter.logging.LoggingSpanExporter;
-import io.opentelemetry.sdk.autoconfigure.spi.SdkTracerProviderConfigurer;
+import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
+import io.opentelemetry.sdk.autoconfigure.spi.traces.SdkTracerProviderConfigurer;
 import io.opentelemetry.sdk.trace.SdkTracerProviderBuilder;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 
@@ -28,22 +29,21 @@ public class TracerProviderConfigurer implements SdkTracerProviderConfigurer {
   private static final String OTEL_LAMBDA_LOG_LEVEL = "OTEL_LAMBDA_LOG_LEVEL";
 
   @Override
-  public void configure(SdkTracerProviderBuilder sdkTracerProviderBuilder) {
-    if (!"DEBUG".equalsIgnoreCase(System.getenv(OTEL_LAMBDA_LOG_LEVEL))) {
-      return;
+  public void configure(SdkTracerProviderBuilder tracerProviderBuilder, ConfigProperties config) {
+    if ("DEBUG".equalsIgnoreCase(System.getenv(OTEL_LAMBDA_LOG_LEVEL))) {
+      maybeEnableLoggingExporter(tracerProviderBuilder, config);
     }
-
-    maybeEnableLoggingExporter(sdkTracerProviderBuilder);
   }
 
-  private static void maybeEnableLoggingExporter(SdkTracerProviderBuilder builder) {
+  private static void maybeEnableLoggingExporter(
+      SdkTracerProviderBuilder builder, ConfigProperties config) {
     // don't install another instance if the user has already explicitly requested it.
-    if (loggingExporterIsNotAlreadyConfigured()) {
+    if (!loggingExporterIsAlreadyConfigured(config)) {
       builder.addSpanProcessor(SimpleSpanProcessor.create(new LoggingSpanExporter()));
     }
   }
 
-  private static boolean loggingExporterIsNotAlreadyConfigured() {
-    return !"logging".equalsIgnoreCase(System.getenv("OTEL_TRACES_EXPORTER"));
+  private static boolean loggingExporterIsAlreadyConfigured(ConfigProperties config) {
+    return config.getList("OTEL_TRACES_EXPORTER").contains("logging");
   }
 }
