@@ -31,6 +31,7 @@ popd
 
 # copy Splunk scripts (delegating to OTEL ones)
 cp ./scripts/* $OTEL_JAVA_DIR/$DISTRO_DIR/
+cp ../scripts/* $OTEL_JAVA_DIR/$DISTRO_DIR/
 
 # ZIP IT
 echo "Creating layer ZIP"

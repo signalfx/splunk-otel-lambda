@@ -22,17 +22,17 @@
 
 > :construction: This project is currently in **BETA**. It is **officially supported** by Splunk. However, breaking changes **MAY** be introduced.
 
-Splunk OpenTelemetry Lambda is a downstream distribution of the [OpenTelemetry Lambda](https://github.com/open-telemetry/opentelemetry-lambda). Supported OpenTelemetry Lambda layers are preconfigured to use Splunk as the tracing backend (direct ingest or SmartAgent). Users can enhance their existing Lambda functions by adding the Splunk-managed layer directly. Layer ARNs [are published here](https://github.com/signalfx/lambda-layer-versions/).
+Splunk OpenTelemetry Lambda is a downstream distribution of the [OpenTelemetry Lambda](https://github.com/open-telemetry/opentelemetry-lambda). Supported OpenTelemetry Lambda layers are preconfigured to use Splunk Observability Cloud as the tracing backend. Users can enhance their existing Lambda functions by adding the Splunk-managed layer directly. Layer ARNs [are published here](https://github.com/signalfx/lambda-layer-versions/).
 
 ## Get started 
 
-Currently, following components are supported:
+Currently following components are supported:
 - [Java wrapper](#java-wrapper) 
 - [Python wrapper](#python-wrapper)
 
 ### Configuration
 
-All wrapper layers are preconfigured to use Splunk as the tracing backend.
+All wrapper layers are preconfigured to use Splunk Observability Cloud as the tracing backend.
 
 1. Context propagation
 
@@ -42,15 +42,26 @@ All wrapper layers are preconfigured to use Splunk as the tracing backend.
    
 2. Traces export
 
-    By default, all wrappers use the Jaeger/Thrift exporter modified by Splunk (`jaeger-thrift-splunk`). The endpoint (`OTEL_EXPORTER_JAEGER_ENDPOINT`) is set to `https://ingest.us0.signalfx.com/v2/trace`, the direct ingest URL for Splunk Observability Cloud. To make it work, you only need to set the Splunk access token:
+    By default, all wrappers use the OTLP/GRPC exporter. 
+    The endpoint (`OTEL_EXPORTER_OTLP_ENDPOINT`) will be set to `https://ingest.${SPLUNK_REALM}.signalfx.com/v2/trace/otlp`, the direct ingest URL for Splunk Observability Cloud if `SPLUNK_REALM` property is set as well. 
+    To make it work, you need to set following variables:
      ```
      SPLUNK_ACCESS_TOKEN: <org_access_token>
+     SPLUNK_REALM: <splunk_realm>
      ``` 
     If you want to change the endpoint, set this environment variable in your Lambda function code:
     ```
+    OTEL_EXPORTER_OTLP_ENDPOINT: <endpoint URL>
+    ```
+   
+    Wrappers also support Jaeger/Thrift exporter modified by Splunk (`jaeger-thrift-splunk`). 
+    The endpoint (`OTEL_EXPORTER_JAEGER_ENDPOINT`) will be set to `https://ingest.${SPLUNK_REALM}.signalfx.com/v2/trace`, the direct ingest URL for Splunk Observability Cloud if `SPLUNK_REALM` property is set as well. 
+    If you want to change the endpoint, set this environment variable in your Lambda function code:
+    ```
+    SPLUNK_ACCESS_TOKEN: <org_access_token>
     OTEL_EXPORTER_JAEGER_ENDPOINT: <endpoint URL>
     ```
-    
+   
 3. OpenTelemetry Metrics export
 
     By default, OpenTelemetry metrics are disabled.    
@@ -102,7 +113,10 @@ The official documentation of the upstream layer can be found [here](https://git
  
 2. Span flush
 
-    Spans are sent synchronously, before the lamda function terminates. Flush timeout is set to maximum 30 seconds. 
+    Spans are sent synchronously, before the lamda function terminates. Default span flush wait timeout is 30 second. It is controlled with a following environment variable (value in milliseconds):
+    ```
+    OTEL_INSTRUMENTATION_AWS_LAMBDA_FLUSH_TIMEOUT: 1000
+    ```
     
 3. Context propagation
 
@@ -123,6 +137,7 @@ Following environment variables should be set:
 ```
 AWS_LAMBDA_EXEC_WRAPPER: /opt/otel-handler
 SPLUNK_ACCESS_TOKEN: <org_access_token>
+SPLUNK_REALM: us0
 ```
 
 #### Python
@@ -137,6 +152,7 @@ Following environment variables should be set:
 ```
 AWS_LAMBDA_EXEC_WRAPPER: /opt/otel-instrument
 SPLUNK_ACCESS_TOKEN: <org_access_token>
+SPLUNK_REALM: us0
 ```
 
 ## Troubleshooting
@@ -145,8 +161,8 @@ SPLUNK_ACCESS_TOKEN: <org_access_token>
 
 1. If traces are not delivered 
     - Set `OTEL_LAMBDA_LOG_LEVEL` to `DEBUG` and search for traces IDs in the backend.
-    - Set `OTEL_LAMBDA_LOG_LEVEL` to `DEBUG` for the `jaeger-thrift-splunk' exporter. This shows debug information for the exporter.
-    - Increase `OTEL_INSTRUMENTATION_AWS_LAMBDA_FLUSH_TIMEOUT`if the backend / network reacts slowly.
+    - Set `OTEL_LAMBDA_LOG_LEVEL` to `DEBUG` for the `jaeger-thrift-splunk` exporter. This causes exporter to log debug information.
+    - Increase `OTEL_INSTRUMENTATION_AWS_LAMBDA_FLUSH_TIMEOUT` if the backend / network reacts slowly.
 
 ## License and versioning
 

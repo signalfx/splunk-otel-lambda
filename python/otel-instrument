@@ -1,13 +1,5 @@
 #!/bin/bash
 
-# no metrics
-export OTEL_METRICS_EXPORTER=none
-# jts traces exporter
-export OTEL_TRACES_EXPORTER="${OTEL_TRACES_EXPORTER:-jaeger-thrift-splunk}"
-export OTEL_EXPORTER_JAEGER_ENDPOINT="${OTEL_EXPORTER_JAEGER_ENDPOINT:-https://ingest.us0.signalfx.com/v2/trace}"
-# tracecontext, baggage propagation
-export OTEL_PROPAGATORS="${OTEL_PROPAGATORS:-tracecontext,baggage}"
-# always on sampler - no sampling!
-export OTEL_TRACES_SAMPLER="${OTEL_TRACES_SAMPLER:-always_on}"
+source /opt/set-default-config
 
 $1 /opt/otel-instrument-upstream $@

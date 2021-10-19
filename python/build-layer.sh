@@ -23,6 +23,7 @@ mv otel-instrument otel-instrument-upstream
 popd
 # copy Splunk scripts (delegating to OTEL ones)
 cp otel-instrument $OTEL_PYTHON_DIR/$DISTRO_DIR/
+cp ../scripts/* $OTEL_PYTHON_DIR/$DISTRO_DIR/
 splunk=$?
 
 # ZIP IT

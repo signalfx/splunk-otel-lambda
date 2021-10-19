@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# disable non-lambda resource providers
+export OTEL_JAVA_DISABLED_RESOURCE_PROVIDERS="${OTEL_JAVA_DISABLED_RESOURCE_PROVIDERS:-\
+io.opentelemetry.sdk.extension.resources.OsResourceProvider,\
+io.opentelemetry.sdk.extension.resources.ProcessResourceProvider,\
+io.opentelemetry.sdk.extension.aws.resource.BeanstalkResourceProvider,\
+io.opentelemetry.sdk.extension.aws.resource.Ec2ResourceProvider,\
+io.opentelemetry.sdk.extension.aws.resource.EcsResourceProvider,\
+io.opentelemetry.sdk.extension.aws.resource.EksResourceProvider}"
