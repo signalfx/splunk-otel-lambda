@@ -1,13 +1,17 @@
 #!/bin/bash
 
-# no metrics
-export OTEL_METRICS_EXPORTER=none
-# jts traces exporter
-export OTEL_TRACES_EXPORTER="${OTEL_TRACES_EXPORTER:-jaeger-thrift-splunk}"
-export OTEL_EXPORTER_JAEGER_ENDPOINT="${OTEL_EXPORTER_JAEGER_ENDPOINT:-https://ingest.us0.signalfx.com/v2/trace}"
-# tracecontext, baggage propagation
-export OTEL_PROPAGATORS="${OTEL_PROPAGATORS:-tracecontext,baggage}"
-# always on sampler - no sampling!
-export OTEL_TRACES_SAMPLER="${OTEL_TRACES_SAMPLER:-always_on}"
+source /opt/splunk-default-config
+
+# temporarily, until Python supports spec exporter/protocol values
+if [ $OTEL_TRACES_EXPORTER = "otlp" ]
+then
+    if [ $OTEL_EXPORTER_OTLP_TRACES_PROTOCOL = "grpc" ]
+    then
+        export OTEL_TRACES_EXPORTER="otlp_proto_grpc"
+    elif [ $OTEL_EXPORTER_OTLP_TRACES_PROTOCOL = "http/protobuf" ]
+    then
+        export OTEL_TRACES_EXPORTER="otlp_proto_http"
+    fi
+fi
 
 $1 /opt/otel-instrument-upstream $@
