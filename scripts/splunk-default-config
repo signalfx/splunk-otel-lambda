@@ -15,7 +15,7 @@ export OTEL_PROPAGATORS="${OTEL_PROPAGATORS:-tracecontext,baggage}"
 export OTEL_TRACES_SAMPLER="${OTEL_TRACES_SAMPLER:-always_on}"
 
 # splunk token header if OLTP
-if [ -n "$SPLUNK_ACCESS_TOKEN" ] && [ "$OTEL_TRACES_EXPORTER" = "otlp" ]
+if [[ -n "$SPLUNK_ACCESS_TOKEN" && "$OTEL_TRACES_EXPORTER" = "otlp" ]]
 then
     HEADER="X-SF-TOKEN=$SPLUNK_ACCESS_TOKEN,"
     export OTEL_EXPORTER_OTLP_HEADERS="$HEADER""${OTEL_EXPORTER_OTLP_HEADERS}"
@@ -31,23 +31,23 @@ then
         export SPLUNK_METRICS_ENDPOINT="https://ingest.${SPLUNK_REALM}.signalfx.com"
     fi
 
-    if [ "$OTEL_TRACES_EXPORTER" = "otlp" ] && [ -z "$OTEL_EXPORTER_OTLP_ENDPOINT" ]
+    if [[ "$OTEL_TRACES_EXPORTER" = "otlp" && -z "$OTEL_EXPORTER_OTLP_ENDPOINT" ]]
     then
         export OTEL_EXPORTER_OTLP_ENDPOINT="https://ingest.${SPLUNK_REALM}.signalfx.com/v2/trace/otlp"
-    elif [ "$OTEL_TRACES_EXPORTER" = "jaeger" ] && [ -z "$OTEL_EXPORTER_JAEGER_ENDPOINT" ]
+    elif [[ "$OTEL_TRACES_EXPORTER" = "jaeger" && -z "$OTEL_EXPORTER_JAEGER_ENDPOINT" ]]
     then
         export OTEL_EXPORTER_JAEGER_ENDPOINT="https://ingest.${SPLUNK_REALM}.signalfx.com/v2/trace"
     fi
 fi
 
 # validation - realm must have token
-if [ -n "$SPLUNK_REALM" ] && [ -z "$SPLUNK_ACCESS_TOKEN" ]
+if [[ -n "$SPLUNK_REALM" && -z "$SPLUNK_ACCESS_TOKEN" ]]
 then
-    echo "CONFIGURATION ERROR! SPLUNK_REALM is set but SPLUNK_ACCESS_TOKEN is not present. This may prevent data export to Splunk Observability Cloud."
+    echo "[ERROR] SPLUNK_REALM is set, but SPLUNK_ACCESS_TOKEN is not set. To export data to Splunk Observability Cloud, define a Splunk Access Token"
 fi
 
 # validation - either realm or relevant exporter endpoint
 if [[ -z "$SPLUNK_REALM" && ( "$OTEL_TRACES_EXPORTER" = "otlp" && -z "$OTEL_EXPORTER_OTLP_ENDPOINT" || "$OTEL_TRACES_EXPORTER" = "jaeger" && -z "$OTEL_EXPORTER_JAEGER_ENDPOINT" ) ]]
 then
-    echo "CONFIGURATION ERROR! Neither SPLUNK_REALM nor exporter endpoint defined. Traces will not be exported."
+    echo "[ERROR] Exporter endpoint must be set when SPLUNK_REALM is not set. To export data, either set a realm and access token or a custom exporter endpoint."
 fi
