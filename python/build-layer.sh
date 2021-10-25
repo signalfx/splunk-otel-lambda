@@ -7,6 +7,7 @@ OTEL_PYTHON_DIR=../opentelemetry-lambda/python/src
 echo "Modify dependencies for Splunk integration"
 pushd "$OTEL_PYTHON_DIR/$SOURCES_DIR"
 sed -i 's/^opentelemetry-distro.*/splunk-opentelemetry[all]==1.0.0/g' requirements.txt
+printf "\nopentelemetry-exporter-otlp-proto-http==1.5.0" >> requirements.txt
 sed -i 's/^docker run --rm/docker run/g'  ../../build.sh
 popd
 
