@@ -1,4 +1,5 @@
 #!/bin/bash
 
-source /opt/set-default-config
+source /opt/splunk-default-config
+source /opt/splunk-java-config
 source /opt/otel-handler-upstream
