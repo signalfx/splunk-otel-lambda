@@ -48,6 +48,7 @@ dependencies {
     compileOnly("io.opentelemetry:opentelemetry-exporter-logging")
     implementation("io.opentelemetry:opentelemetry-exporter-zipkin")
     implementation("io.opentelemetry:opentelemetry-exporter-jaeger")
+    implementation("io.opentelemetry:opentelemetry-exporter-otlp-http-trace")
 
     // lambda core
     implementation("com.amazonaws:aws-lambda-java-events:2.2.1")
@@ -63,6 +64,10 @@ dependencies {
 configurations.runtimeElements {
     exclude group: 'io.opentelemetry', module: 'opentelemetry-api'
     exclude group: 'io.opentelemetry', module: 'opentelemetry-sdk'
+    exclude group: 'io.opentelemetry', module: 'opentelemetry-sdk-trace'
+    exclude group: 'io.opentelemetry', module: 'opentelemetry-sdk-common'
+    exclude group: 'io.opentelemetry', module: 'opentelemetry-sdk-metrics'
+    exclude group: 'io.opentelemetry', module: 'opentelemetry-exporter-otlp-common'
     exclude group: 'io.opentelemetry', module: 'opentelemetry-semconv'
     exclude group: 'org.slf4j', module: 'slf4j-api'
     exclude group: 'com.google.code.gson'

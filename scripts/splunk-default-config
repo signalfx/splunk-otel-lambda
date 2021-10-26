@@ -31,10 +31,10 @@ then
         export SPLUNK_METRICS_ENDPOINT="https://ingest.${SPLUNK_REALM}.signalfx.com"
     fi
 
-    if [[ "$OTEL_TRACES_EXPORTER" = "otlp" && -z "$OTEL_EXPORTER_OTLP_ENDPOINT" ]]
+    if [[ "$OTEL_TRACES_EXPORTER" = *"otlp"* && -z "$OTEL_EXPORTER_OTLP_ENDPOINT" ]]
     then
         export OTEL_EXPORTER_OTLP_ENDPOINT="https://ingest.${SPLUNK_REALM}.signalfx.com/v2/trace/otlp"
-    elif [[ "$OTEL_TRACES_EXPORTER" = "jaeger" && -z "$OTEL_EXPORTER_JAEGER_ENDPOINT" ]]
+    elif [[ "$OTEL_TRACES_EXPORTER" = *"jaeger"* && -z "$OTEL_EXPORTER_JAEGER_ENDPOINT" ]]
     then
         export OTEL_EXPORTER_JAEGER_ENDPOINT="https://ingest.${SPLUNK_REALM}.signalfx.com/v2/trace"
     fi
@@ -47,7 +47,7 @@ then
 fi
 
 # validation - either realm or relevant exporter endpoint
-if [[ -z "$SPLUNK_REALM" && ( "$OTEL_TRACES_EXPORTER" = "otlp" && -z "$OTEL_EXPORTER_OTLP_ENDPOINT" || "$OTEL_TRACES_EXPORTER" = "jaeger" && -z "$OTEL_EXPORTER_JAEGER_ENDPOINT" ) ]]
+if [[ -z "$SPLUNK_REALM" && ( "$OTEL_TRACES_EXPORTER" = *"otlp"* && -z "$OTEL_EXPORTER_OTLP_ENDPOINT" || "$OTEL_TRACES_EXPORTER" = *"jaeger"* && -z "$OTEL_EXPORTER_JAEGER_ENDPOINT" ) ]]
 then
     echo "[ERROR] Exporter endpoint must be set when SPLUNK_REALM is not set. To export data, either set a realm and access token or a custom exporter endpoint."
 fi
