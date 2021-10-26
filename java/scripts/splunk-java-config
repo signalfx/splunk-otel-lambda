@@ -8,3 +8,9 @@ io.opentelemetry.sdk.extension.aws.resource.BeanstalkResourceProvider,\
 io.opentelemetry.sdk.extension.aws.resource.Ec2ResourceProvider,\
 io.opentelemetry.sdk.extension.aws.resource.EcsResourceProvider,\
 io.opentelemetry.sdk.extension.aws.resource.EksResourceProvider}"
+
+# backport for Java SDK 1.6 name - remove after upgrade!
+if [ -n "$OTEL_EXPORTER_OTLP_TRACES_PROTOCOL" ]
+then
+  export OTEL_EXPERIMENTAL_EXPORTER_OTLP_TRACES_PROTOCOL="${OTEL_EXPORTER_OTLP_TRACES_PROTOCOL}"
+fi
