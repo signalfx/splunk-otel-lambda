@@ -3,14 +3,14 @@
 source /opt/splunk-default-config
 
 # temporarily, until Python supports spec exporter/protocol values
-if [ $OTEL_TRACES_EXPORTER = "otlp" ]
+if [[ $OTEL_TRACES_EXPORTER = *"otlp"* ]]
 then
     if [ $OTEL_EXPORTER_OTLP_TRACES_PROTOCOL = "grpc" ]
     then
-        export OTEL_TRACES_EXPORTER="otlp_proto_grpc"
+        export OTEL_TRACES_EXPORTER="otlp_proto_grpc_span"
     elif [ $OTEL_EXPORTER_OTLP_TRACES_PROTOCOL = "http/protobuf" ]
     then
-        export OTEL_TRACES_EXPORTER="otlp_proto_http"
+        export OTEL_TRACES_EXPORTER="otlp_proto_http_span"
     fi
 fi
 
