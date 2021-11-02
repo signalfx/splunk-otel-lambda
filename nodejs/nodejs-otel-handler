@@ -1,0 +1,11 @@
+#!/bin/bash
+
+source /opt/splunk-default-config
+
+export NODE_OPTIONS="${NODE_OPTIONS} --require /opt/wrapper.js"
+
+if [[ $OTEL_RESOURCE_ATTRIBUTES != *"service.name="* ]]; then
+  export OTEL_RESOURCE_ATTRIBUTES="service.name=${AWS_LAMBDA_FUNCTION_NAME},${OTEL_RESOURCE_ATTRIBUTES}"
+fi
+
+exec "$@"
