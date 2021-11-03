@@ -1,14 +1,14 @@
 #!/bin/bash
 
 echo "Building the wrapper"
-npm install
+npm install --unsafe-perm
 wrapper=$?
 
 echo "Preparing Splunk layer"
-cp nodejs-otel-handler build
-cp ../scripts/* build
+cp nodejs-otel-handler ./build/
+cp ../scripts/* ./build/
 mkdir -p build/nodejs
-mv node_modules build/nodejs/
+mv node_modules ./build/nodejs/
 splunk=$?
 
 # ZIP IT
