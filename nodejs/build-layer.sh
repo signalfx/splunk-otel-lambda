@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Building the wrapper"
-npm install --unsafe-perm
+npm install --unsafe-perm && npm prune --production
 wrapper=$?
 
 echo "Preparing Splunk layer"
