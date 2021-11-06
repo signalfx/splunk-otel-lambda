@@ -29,7 +29,7 @@ Splunk OpenTelemetry Lambda is a downstream distribution of the [OpenTelemetry L
 The following components are currently supported:
 - [Java wrapper](#java-wrapper) 
 - [Python wrapper](#python-wrapper)
-- [Node.js wrapper](#node.js-wrapper)
+- [Node.js wrapper](#nodejs-wrapper)
 
 ### Configuration
 
