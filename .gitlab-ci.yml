@@ -1,6 +1,5 @@
 # verification job run upon GitLab PR
 gitlab-pr-build:
-  stage: test
   only:
     - external_pull_requests
   variables:
