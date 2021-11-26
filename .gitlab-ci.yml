@@ -1,0 +1,9 @@
+# verification job run upon GitLab PR
+gitlab-pr-build:
+  only:
+    - external_pull_requests
+  variables:
+    PR_BUILD: splunk-apm
+  trigger:
+    project: observability/gdi/lambda-layers
+    strategy: depend
