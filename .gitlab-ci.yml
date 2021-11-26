@@ -1,0 +1,9 @@
+gitlab-pr-build:
+  stage: test
+  only:
+    - external_pull_requests
+  variables:
+    PR_BUILD: splunk-apm
+  trigger:
+    project: observability/gdi/lambda-layers
+    strategy: depend
