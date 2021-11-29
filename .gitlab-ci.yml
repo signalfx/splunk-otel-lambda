@@ -1,7 +1,7 @@
 # verification job run upon GitLab PR
 gitlab-pr-build:
   only:
-    - external_pull_requests
+    - branches
   variables:
     PR_BUILD: splunk-apm
   trigger:
