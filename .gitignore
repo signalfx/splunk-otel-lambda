@@ -2,5 +2,5 @@
 java/.gradle
 java/build
 /nodejs/tsconfig.tsbuildinfo
-/nodejs/package-lock.json
 /nodejs/build/
+/nodejs/node-prune

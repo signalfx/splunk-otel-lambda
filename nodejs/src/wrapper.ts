@@ -25,7 +25,7 @@ import { startTracing } from '@splunk/otel';
 const logLevel = getEnv().OTEL_LOG_LEVEL
 diag.setLogger(new DiagConsoleLogger(), logLevel)
 
-const { AwsInstrumentation } = require('opentelemetry-instrumentation-aws-sdk');
+const { AwsInstrumentation } = require('@opentelemetry/instrumentation-aws-sdk');
 const { AwsLambdaInstrumentation } = require('@opentelemetry/instrumentation-aws-lambda');
 const { DnsInstrumentation } = require('@opentelemetry/instrumentation-dns');
 const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
