@@ -4,6 +4,7 @@ gitlab-pr-build:
     - branches
   variables:
     PR_BUILD: splunk-apm
+    BRANCH: $CI_COMMIT_REF_NAME
   trigger:
     project: observability/gdi/lambda-layers
     strategy: depend
