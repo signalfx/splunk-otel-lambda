@@ -4,6 +4,7 @@ echo "Building the wrapper"
 rm -rf node_modules
 npm install --unsafe-perm
 wrapper=$?
+
 # optimise the size
 npm prune --production
 [ ! -f node-prune ] && curl -sf https://gobinaries.com/tj/node-prune | PREFIX=. sh
