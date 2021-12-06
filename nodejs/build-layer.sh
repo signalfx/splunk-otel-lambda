@@ -1,7 +1,13 @@
 #!/bin/bash
 
 echo "Building the wrapper"
-npm install --unsafe-perm && npm prune --production
+rm -rf node_modules
+npm install --unsafe-perm
+npm prune --production
+[ ! -f node-prune ] && curl -sf https://gobinaries.com/tj/node-prune | PREFIX=. sh
+node-prune
+find node_modules -name "*.map" -type f -delete
+find node_modules -path "*/platform/*" -name "browser" -type d -prune -exec rm -rf {} \;
 wrapper=$?
 
 echo "Preparing Splunk layer"

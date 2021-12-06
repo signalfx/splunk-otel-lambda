@@ -7,7 +7,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "clean": "tsc --build --clean",
-    "preinstall": "rm -rf build tsconfig.tsbuildinfo",
+    "preinstall": "rm -rf build tsconfig.tsbuildinfo && npx npm-force-resolutions",
     "compile": "tsc --build",
     "postinstall": "npm run compile",
     "watch": "tsc --build --watch"
@@ -48,5 +48,8 @@
     "@splunk/otel": "0.15.0",
     "@types/signalfx": "7.0.2",
     "@opentelemetry/instrumentation-aws-sdk": "^0.4.0"
+  },
+  "resolutions": {
+    "@opentelemetry/instrumentation": "0.27.0"
   }
 }
