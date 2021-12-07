@@ -25,6 +25,11 @@ import { startTracing } from '@splunk/otel';
 const logLevel = getEnv().OTEL_LOG_LEVEL
 diag.setLogger(new DiagConsoleLogger(), logLevel)
 
+// configure flush timeout
+let forceFlushTimeoutMillisEnv = parseInt(process.env.OTEL_INSTRUMENTATION_AWS_LAMBDA_FLUSH_TIMEOUT || "")
+const forceFlushTimeoutMillis = (isNaN(forceFlushTimeoutMillisEnv) ? 3000 : forceFlushTimeoutMillisEnv)
+diag.debug(`ForceFlushTimeout set to: ${forceFlushTimeoutMillis}`);
+
 const { AwsInstrumentation } = require('@opentelemetry/instrumentation-aws-sdk');
 const { AwsLambdaInstrumentation } = require('@opentelemetry/instrumentation-aws-lambda');
 const { DnsInstrumentation } = require('@opentelemetry/instrumentation-dns');
@@ -66,7 +71,8 @@ async function initializeProvider() {
     detectors: [awsLambdaDetector, envDetector, processDetector],
   });
   const tracerConfig: NodeTracerConfig = {
-    resource
+    resource,
+    forceFlushTimeoutMillis,
   };
   startTracing({tracerConfig: tracerConfig, instrumentations: instrumentations})
 }
