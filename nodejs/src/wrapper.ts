@@ -72,7 +72,7 @@ async function initializeProvider() {
   });
   const tracerConfig: NodeTracerConfig = {
     resource,
-    forceFlushTimeoutMillis: forceFlushTimeoutMillis
+    forceFlushTimeoutMillis,
   };
   startTracing({tracerConfig: tracerConfig, instrumentations: instrumentations})
 }
