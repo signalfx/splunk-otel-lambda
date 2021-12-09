@@ -20,6 +20,10 @@ echo "Preparing Splunk layer"
 cd $DISTRO_DIR
 docker cp `docker ps --all | grep aws-otel-lambda-python-layer | cut -d' ' -f1 | head -1`:/out/layer.zip .
 unzip -qo layer.zip && rm layer.zip
+
+# poor man's size optimisation
+rm -rf python/opentelemetry/exporter/jaeger python/opentelemetry-exporter-jaeger-thrift* python/thrift* python/six*
+
 mv otel-instrument otel-instrument-upstream
 popd
 # copy Splunk scripts (delegating to OTEL ones)
