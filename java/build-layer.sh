@@ -36,6 +36,12 @@ cp ../scripts/* $OTEL_JAVA_DIR/$DISTRO_DIR/
 # ZIP IT
 echo "Creating layer ZIP"
 cd $OTEL_JAVA_DIR/$DISTRO_DIR
+
+# size optimisation
+pushd java/lib
+rm opentelemetry-exporter-otlp-metrics-*.jar
+popd
+
 zip -qr opentelemetry-java-wrapper.zip *
 zip=$?
 
