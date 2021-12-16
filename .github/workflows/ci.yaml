@@ -22,9 +22,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           args: >-
-            -v -n "*.md" "**/*.md"
+            --verbose --no-progress **/*.md
             --exclude "https://ingest.us0.signalfx.com.*"
             --exclude "http://localhost*"
-
       - name: Fail if there were link errors
         run: exit ${{ steps.lychee.outputs.exit_code }}
