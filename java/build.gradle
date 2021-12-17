@@ -8,8 +8,8 @@ description = "Splunk distribution of OpenTelemetry Lambda"
 
 ext {
     versions = [
-            opentelemetry: '1.6.0',
-            opentelemetryalpha: '1.6.0-alpha'
+            opentelemetry: '1.7.0',
+            opentelemetryalpha: '1.7.0-alpha'
     ]
 }
 
@@ -44,7 +44,7 @@ dependencies {
     implementation("io.opentelemetry:opentelemetry-exporter-otlp-http-trace")
 
     // lambda core
-    implementation("com.amazonaws:aws-lambda-java-events:2.2.1")
+    implementation("com.amazonaws:aws-lambda-java-events:3.10.0")
 
     // lambda logging
     implementation("com.amazonaws:aws-lambda-java-log4j2:1.4.0")
