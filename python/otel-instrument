@@ -7,11 +7,11 @@ if [[ $OTEL_TRACES_EXPORTER = *"otlp"* ]]
 then
     if [ $OTEL_EXPORTER_OTLP_TRACES_PROTOCOL = "grpc" ]
     then
-        export OTEL_TRACES_EXPORTER="otlp_proto_grpc_span"
+        export OTEL_TRACES_EXPORTER="otlp_proto_grpc"
     elif [ $OTEL_EXPORTER_OTLP_TRACES_PROTOCOL = "http/protobuf" ]
     then
-        export OTEL_TRACES_EXPORTER="otlp_proto_http_span"
+        export OTEL_TRACES_EXPORTER="otlp_proto_http"
     fi
 fi
 
-$1 /opt/otel-instrument-upstream $@
+/opt/otel-instrument-upstream $@

@@ -76,7 +76,7 @@ All components are preconfigured to use Splunk Observability Cloud as the tracin
  
 ### Java wrapper
 
-The Java wrapper is based on OpenTelemetry Java version 1.6.0. 
+The Java wrapper is based on OpenTelemetry Java version 1.7.0. 
 
 The official documentation of the upstream layer can be found [here](https://github.com/open-telemetry/opentelemetry-lambda/blob/main/java/README.md).
 
