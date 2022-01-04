@@ -18,7 +18,7 @@ export OTEL_TRACES_SAMPLER="${OTEL_TRACES_SAMPLER:-always_on}"
 if [[ -n "$SPLUNK_ACCESS_TOKEN" && "$OTEL_TRACES_EXPORTER" = "otlp" ]]
 then
     HEADER="X-SF-TOKEN=$SPLUNK_ACCESS_TOKEN,"
-    export OTEL_EXPORTER_OTLP_HEADERS="$HEADER""${OTEL_EXPORTER_OTLP_HEADERS}"
+    export OTEL_EXPORTER_OTLP_TRACES_HEADERS="$HEADER""${OTEL_EXPORTER_OTLP_TRACES_HEADERS}"
 fi
 
 
@@ -31,9 +31,9 @@ then
         export SPLUNK_METRICS_ENDPOINT="https://ingest.${SPLUNK_REALM}.signalfx.com"
     fi
 
-    if [[ "$OTEL_TRACES_EXPORTER" = *"otlp"* && -z "$OTEL_EXPORTER_OTLP_ENDPOINT" ]]
+    if [[ "$OTEL_TRACES_EXPORTER" = *"otlp"* && -z "$OTEL_EXPORTER_OTLP_TRACES_ENDPOINT" ]]
     then
-        export OTEL_EXPORTER_OTLP_ENDPOINT="https://ingest.${SPLUNK_REALM}.signalfx.com/v2/trace/otlp"
+        export OTEL_EXPORTER_OTLP_TRACES_ENDPOINT="https://ingest.${SPLUNK_REALM}.signalfx.com/v2/trace/otlp"
     elif [[ "$OTEL_TRACES_EXPORTER" = *"jaeger"* && -z "$OTEL_EXPORTER_JAEGER_ENDPOINT" ]]
     then
         export OTEL_EXPORTER_JAEGER_ENDPOINT="https://ingest.${SPLUNK_REALM}.signalfx.com/v2/trace"
