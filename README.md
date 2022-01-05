@@ -10,8 +10,8 @@
 
 <p align="center">
   <img alt="Beta" src="https://img.shields.io/badge/status-beta-informational?style=for-the-badge">
-  <a href="https://github.com/signalfx/gdi-specification/releases/tag/v1.0.0">
-    <img alt="Splunk GDI specification" src="https://img.shields.io/badge/GDI-1.0.0-blueviolet?style=for-the-badge">
+  <a href="https://github.com/signalfx/gdi-specification/releases/tag/v1.2.0">
+    <img alt="Splunk GDI specification" src="https://img.shields.io/badge/GDI-1.2.0-blueviolet?style=for-the-badge">
   </a>
   <a href="https://github.com/signalfx/splunk-otel-lambda/actions?query=workflow%3A%22CI+build%22">
     <img alt="Build Status" src="https://img.shields.io/github/workflow/status/signalfx/splunk-otel-lambda/CI%20build?style=for-the-badge">

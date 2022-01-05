@@ -1,0 +1,1 @@
+> The release process involves signing built packages and binaries and thus must be kept private and not exposed publicly.
