@@ -63,7 +63,7 @@ function getEnvBoolean(key: string, defaultValue = true) {
 
 // an educated guess - how to check if particular response is an API Gateway event?
 function isApiGatewayResponse(data:any) {
-    return (data.res && data.res.body && data.res.statusCode);
+    return (data && data.res && data.res.body && data.res.statusCode);
 }
 
 const responseHook = (
