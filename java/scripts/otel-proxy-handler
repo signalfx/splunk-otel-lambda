@@ -2,4 +2,14 @@
 
 source /opt/splunk-default-config
 source /opt/splunk-java-config
-source /opt/otel-proxy-handler-upstream
+
+export OTEL_INSTRUMENTATION_AWS_LAMBDA_HANDLER="$_HANDLER"
+export _HANDLER="com.splunk.support.lambda.TracingRequestApiGatewayWrapper"
+
+if [[ $OTEL_RESOURCE_ATTRIBUTES != *"service.name="* ]]; then
+  export OTEL_RESOURCE_ATTRIBUTES="service.name=${AWS_LAMBDA_FUNCTION_NAME},${OTEL_RESOURCE_ATTRIBUTES}"
+fi
+
+export OTEL_INSTRUMENTATION_AWS_LAMBDA_FLUSH_TIMEOUT="${OTEL_INSTRUMENTATION_AWS_LAMBDA_FLUSH_TIMEOUT:-10000}"
+
+exec "$@"
