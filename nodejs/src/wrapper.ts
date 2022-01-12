@@ -17,7 +17,7 @@
 import { NodeTracerConfig } from '@opentelemetry/sdk-trace-node';
 import { awsLambdaDetector } from '@opentelemetry/resource-detector-aws';
 import { detectResources, envDetector, processDetector } from '@opentelemetry/resources';
-import { diag, DiagConsoleLogger } from "@opentelemetry/api";
+import { diag, DiagConsoleLogger, isSpanContextValid, Span, TraceFlags } from "@opentelemetry/api";
 import { getEnv } from '@opentelemetry/core';
 import { startTracing } from '@splunk/otel';
 
@@ -46,11 +46,60 @@ const { NetInstrumentation } = require('@opentelemetry/instrumentation-net');
 const { PgInstrumentation } = require('@opentelemetry/instrumentation-pg');
 const { RedisInstrumentation } = require('@opentelemetry/instrumentation-redis');
 
+// AWS lambda instrumentation response hook for Server-Timing support
+function getEnvBoolean(key: string, defaultValue = true) {
+  const value = process.env[key];
+
+  if (value === undefined) {
+    return defaultValue;
+  }
+
+  if (['false', 'no', '0'].indexOf(value.trim().toLowerCase()) >= 0) {
+    return false;
+  }
+
+  return true;
+}
+
+// an educated guess - how to check if particular response is an API Gateway event?
+function isApiGatewayResponse(data:any) {
+    return (data.res && data.res.body && data.res.statusCode);
+}
+
+const responseHook = (
+    span:Span,
+    data:any
+  ) => {
+
+    const serverTimingEnabled = getEnvBoolean(
+      'SPLUNK_TRACE_RESPONSE_HEADER_ENABLED',
+      true
+    );
+    const spanContext = span.spanContext();
+
+    if (!isApiGatewayResponse(data) || !serverTimingEnabled || !isSpanContextValid(spanContext)) {
+        return;
+    }
+
+    if (!data.res.headers) {
+        data.res.headers = {};
+    }
+
+    const { traceFlags, traceId, spanId } = spanContext;
+    const sampled = (traceFlags & TraceFlags.SAMPLED) === TraceFlags.SAMPLED;
+    const flags = sampled ? '01' : '00';
+
+    data.res.headers['Access-Control-Expose-Headers'] = 'Server-Timing';
+    data.res.headers['Server-Timing'] = `traceparent;desc="00-${traceId}-${spanId}-${flags}"`;
+  };
+
 const instrumentations = [
   new AwsInstrumentation({
     suppressInternalInstrumentation: true,
   }),
-  new AwsLambdaInstrumentation(),
+  new AwsLambdaInstrumentation({
+    responseHook
+  }),
   new DnsInstrumentation(),
   new ExpressInstrumentation(),
   new GraphQLInstrumentation(),
