@@ -20,6 +20,7 @@ import { detectResources, envDetector, processDetector } from '@opentelemetry/re
 import { diag, DiagConsoleLogger, isSpanContextValid, Span, TraceFlags } from "@opentelemetry/api";
 import { getEnv } from '@opentelemetry/core';
 import { startTracing } from '@splunk/otel';
+import type { ResponseHook } from '@opentelemetry/instrumentation-aws-lambda';
 
 // configure lambda logging
 const logLevel = getEnv().OTEL_LOG_LEVEL
@@ -66,10 +67,7 @@ function isApiGatewayResponse(data:any) {
     return (data && data.res && data.res.body && data.res.statusCode);
 }
 
-const responseHook = (
-    span:Span,
-    data:any
-  ) => {
+const responseHook: ResponseHook = (span, data) => {
 
     const serverTimingEnabled = getEnvBoolean(
       'SPLUNK_TRACE_RESPONSE_HEADER_ENABLED',
