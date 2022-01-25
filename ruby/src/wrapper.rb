@@ -14,8 +14,7 @@ class ServerTimingHeader
 
   def is_enabled?
     value = ENV.fetch('SPLUNK_TRACE_RESPONSE_HEADER_ENABLED', 'true').to_s.downcase
-    return false if FALSE_VALUES.include?(value)
-    return true
+    return !FALSE_VALUES.include?(value)
   end
 
   def is_api_gateway_response?(response)
