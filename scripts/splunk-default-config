@@ -5,8 +5,8 @@ export OTEL_METRICS_EXPORTER=none
 
 # otlp traces exporter
 export OTEL_TRACES_EXPORTER="${OTEL_TRACES_EXPORTER:-otlp}"
-# otlp-grpc protocol
-export OTEL_EXPORTER_OTLP_TRACES_PROTOCOL="${OTEL_EXPORTER_OTLP_TRACES_PROTOCOL:-grpc}"
+# http/protobuf protocol
+export OTEL_EXPORTER_OTLP_TRACES_PROTOCOL="${OTEL_EXPORTER_OTLP_TRACES_PROTOCOL:-http/protobuf}"
 
 # tracecontext, baggage propagation
 export OTEL_PROPAGATORS="${OTEL_PROPAGATORS:-tracecontext,baggage}"

@@ -28,7 +28,7 @@ diag.setLogger(new DiagConsoleLogger(), logLevel)
 
 // configure flush timeout
 let forceFlushTimeoutMillisEnv = parseInt(process.env.OTEL_INSTRUMENTATION_AWS_LAMBDA_FLUSH_TIMEOUT || "")
-const forceFlushTimeoutMillis = (isNaN(forceFlushTimeoutMillisEnv) ? 3000 : forceFlushTimeoutMillisEnv)
+const forceFlushTimeoutMillis = (isNaN(forceFlushTimeoutMillisEnv) ? 30000 : forceFlushTimeoutMillisEnv)
 diag.debug(`ForceFlushTimeout set to: ${forceFlushTimeoutMillis}`);
 
 const { AwsInstrumentation } = require('@opentelemetry/instrumentation-aws-sdk');
