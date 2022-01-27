@@ -30,6 +30,7 @@ The following components are currently supported:
 - [Java wrapper](#java-wrapper) 
 - [Python wrapper](#python-wrapper)
 - [Node.js wrapper](#nodejs-wrapper)
+- [Ruby wrapper](#ruby-wrapper)
 
 ### Configuration
 
@@ -43,7 +44,9 @@ All components are preconfigured to use Splunk Observability Cloud as the tracin
    
 2. Traces export
 
-    By default, all wrappers use the OTLP/gRPC exporter. 
+    By default:
+    - Node.js wrapper uses the `Jaeger/Thrift` exporter
+    - all other wrappers use the `OTLP/http/protobuf` exporter. 
     If the `SPLUNK_REALM` environment variable is set, the value of the`OTEL_EXPORTER_OTLP_ENDPOINT` environment variable is `https://ingest.${SPLUNK_REALM}.signalfx.com/v2/trace/otlp`, the direct ingest URL for Splunk Observability Cloud. 
     To make it work, you need to set following variables:
      ```
@@ -54,17 +57,12 @@ All components are preconfigured to use Splunk Observability Cloud as the tracin
     ```
     OTEL_EXPORTER_OTLP_ENDPOINT: <endpoint URL>
     ```
-    Wrappers also support Jaeger Thrift exporter modified by Splunk (`jaeger-thrift-splunk`). 
-    The endpoint (`OTEL_EXPORTER_JAEGER_ENDPOINT`) will be set to `https://ingest.${SPLUNK_REALM}.signalfx.com/v2/trace`, the direct ingest URL for Splunk Observability Cloud if `SPLUNK_REALM` property is set as well. 
+    In the case of Jaeger Thrift exporter modified by Splunk (`jaeger-thrift-splunk`), the endpoint (`OTEL_EXPORTER_JAEGER_ENDPOINT`) will be set to `https://ingest.${SPLUNK_REALM}.signalfx.com/v2/trace`, the direct ingest URL for Splunk Observability Cloud if `SPLUNK_REALM` property is set as well. 
     If you want to change the endpoint, set this environment variable in your Lambda function code:
     ```
     SPLUNK_ACCESS_TOKEN: <org_access_token>
     OTEL_EXPORTER_JAEGER_ENDPOINT: <endpoint URL>
     ```
-   
-   > **_NOTE:_**  Currently Splunk Observability Cloud supports `Jaeger Thrift` and `OTLP` (with `http/protobuf`) protocols. In order to send traces directly to ingest, set following environment variable in your Lambda function code:
-   > - Java/Python - `OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf`
-   > - Node.js - `OTEL_TRACES_EXPORTER: jaeger-thrift-splunk`
 
 3. OpenTelemetry Metrics export
 
@@ -73,7 +71,27 @@ All components are preconfigured to use Splunk Observability Cloud as the tracin
 4. Sampling
 
     `OTEL_TRACE_SAMPLER` is set to `always_on` by default, meaning that all spans are always sampled.
- 
+
+5. Span flush
+
+    Spans are sent synchronously, before the lambda function terminates. Default span flush wait timeout is 30 seconds. It is controlled with a following environment variable (value in milliseconds):
+    ```
+    OTEL_INSTRUMENTATION_AWS_LAMBDA_FLUSH_TIMEOUT: 30000
+    ```
+
+6. Logging
+
+    Logging is controller with `OTEL_LOG_LEVEL` environment variable. When set to `DEBUG`, additional data will be logged to help with troubleshooting. 
+    Please note that enabling `DEBUG` will generate additional logs which may in turn increase AWS CloudWatch costs. 
+    
+7. Server-Timing header (Splunk RUM integration).
+    
+    The RUM integration is enabled by default, which means that every HTTP response from an instrumented lambda will contain following headers:
+    ```
+    Access-Control-Expose-Headers: Server-Timing
+    Server-Timing: traceparent;desc="00-<trace-id>-<span-id>-<trace-flags>"
+    ```
+
 ### Java wrapper
 
 The Java wrapper is based on OpenTelemetry Java version 1.7.0. 
@@ -87,26 +105,13 @@ The official documentation of the upstream layer can be found [here](https://git
     - `/opt/otel-proxy-handler` for wrapping regular handlers implementing `RequestHandler`, proxied through API Gateway, and enabling HTTP context propagation
     - `/opt/otel-stream-handler` for wrapping streaming handlers implementing `RequestStreamHandler`
 
-2. Span flush
+2. Context propagation
 
-    Spans are sent synchronously, before the lamda function terminates. Default span flush wait timeout is 1 second. It is controlled with a following environment variable (value in milliseconds):
-    ```
-    OTEL_INSTRUMENTATION_AWS_LAMBDA_FLUSH_TIMEOUT: 30000
-    ```
-   
-3. Context propagation
-
-    For more information about available context propagators, see the [Propagator settings](https://github.com/open-telemetry/opentelemetry-java/tree/v1.1.0/sdk-extensions/autoconfigure#customizing-the-opentelemetry-sdk) for the OpenTelemetry Java.
-
-4. Logging
-    
-    Logging is controller with `OTEL_LAMBDA_LOG_LEVEL` environment variable. Default set to `WARN`. When set to `DEBUG`, the logging exporter is added to traces exporter in order to help verify exported data.
-    
-    Please note that enabling `DEBUG` will generate additional logs which may in turn increase AWS CloudWatch costs. 
+    For more information about available context propagators, see the [Propagator settings](https://github.com/open-telemetry/opentelemetry-java/tree/v1.1.0/sdk-extensions/autoconfigure#customizing-the-opentelemetry-sdk) for the OpenTelemetry Java.    
 
 ### Python wrapper
 
-The Python wrapper is based on Splunk Distribution of OpenTelemetry Python version `v1.0.0`. 
+The Python wrapper is based on Splunk Distribution of OpenTelemetry Python version `v1.2.0`. 
 
 The official documentation of the upstream layer can be found [here](https://github.com/open-telemetry/opentelemetry-lambda/blob/main/python/README.md).
 
@@ -114,20 +119,13 @@ The official documentation of the upstream layer can be found [here](https://git
 
     Set the `AWS_LAMBDA_EXEC_WRAPPER` environment variable to `/opt/otel-instrument`.
  
-2. Span flush
-
-    Spans are sent synchronously, before the lambda function terminates. Default span flush wait timeout is 30 seconds. It is controlled with a following environment variable (value in milliseconds):
-    ```
-    OTEL_INSTRUMENTATION_AWS_LAMBDA_FLUSH_TIMEOUT: 1000
-    ```
-    
-3. Context propagation
+2. Context propagation
 
     For more information about available context propagators, see the [Propagator settings](https://github.com/signalfx/splunk-otel-python/blob/main/docs/advanced-config.md#trace-propagation-configuration) for the Splunk distribution of OpenTelemetry Python.
 
 ### Node.js wrapper
 
-The Node.js wrapper is based on Splunk Distribution of OpenTelemetry for Node.js version `0.14.0`. 
+The Node.js wrapper is based on Splunk Distribution of OpenTelemetry for Node.js version `0.15.0`. 
 
 The documentation of the base distribution can be found [here](https://github.com/signalfx/splunk-otel-js).
 
@@ -135,13 +133,23 @@ The documentation of the base distribution can be found [here](https://github.co
 
     Set the `AWS_LAMBDA_EXEC_WRAPPER` environment variable to `/opt/nodejs-otel-handler`.
  
-2. Span flush
-
-    Spans are sent synchronously, before the lambda function terminates. Flush timeout is set to maximum 30 seconds. 
-    
-3. Context propagation
+2. Context propagation
 
     For more information about available context propagators, see the [Propagator settings](https://github.com/signalfx/splunk-otel-js/blob/main/docs/advanced-config.md#advanced-configuration) for the Splunk distribution of OpenTelemetry for Node.js.
+
+### Ruby wrapper
+
+The Ruby wrapper is based on OpenTelemetry SDK for Ruby version `1.0.2` and OpenTelemetry Instrumentation for Ruby version `0.23.0`.
+
+The documentation of the base distribution can be found [here](https://github.com/open-telemetry/opentelemetry-ruby).
+
+1. Installation
+
+    Set the `AWS_LAMBDA_EXEC_WRAPPER` environment variable to `/opt/ruby-otel-handler`.
+    
+2. Context propagation
+
+    For more information about available context propagators, see the [Propagator settings](https://opentelemetry.io/docs/instrumentation/ruby/context_propagation/).
 
 
 ### Configuration example
@@ -160,7 +168,6 @@ Following environment variables should be set:
 AWS_LAMBDA_EXEC_WRAPPER: /opt/otel-handler
 SPLUNK_ACCESS_TOKEN: <org_access_token>
 SPLUNK_REALM: us0
-OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
 ```
 
 #### Python
@@ -176,7 +183,6 @@ Following environment variables should be set:
 AWS_LAMBDA_EXEC_WRAPPER: /opt/otel-instrument
 SPLUNK_ACCESS_TOKEN: <org_access_token>
 SPLUNK_REALM: us0
-OTEL_EXPORTER_OTLP_TRACES_PROTOCOL: http/protobuf
 ```
 
 #### Node.js
@@ -192,7 +198,21 @@ Following environment variables should be set:
 AWS_LAMBDA_EXEC_WRAPPER: /opt/nodejs-otel-handler
 SPLUNK_ACCESS_TOKEN: <org_access_token>
 SPLUNK_REALM: us0
-OTEL_TRACES_EXPORTER: jaeger-thrift-splunk
+```
+
+#### Ruby
+
+The example assumes the following:
+
+- Data is sent to Splunk APM directly via Ingest endpoint.
+- Context propagation is default (`tracecontext,baggage`).
+- Realm is `us0`.
+
+Following environment variables should be set:
+```
+AWS_LAMBDA_EXEC_WRAPPER: /opt/ruby-otel-handler
+SPLUNK_ACCESS_TOKEN: <org_access_token>
+SPLUNK_REALM: us0
 ```
 
 ## Troubleshooting
@@ -201,9 +221,7 @@ OTEL_TRACES_EXPORTER: jaeger-thrift-splunk
 
 1. If traces are not showing in APM 
     - Set `OTEL_LOG_LEVEL` to `DEBUG` and check the CloudWatch logs.
-    - Set `OTEL_LAMBDA_LOG_LEVEL` to `DEBUG` and search for traces IDs in the backend.
-    - Set `OTEL_LAMBDA_LOG_LEVEL` to `DEBUG` for the `jaeger-thrift-splunk' exporter. This shows debug information for the exporter.
-    - Increase `OTEL_INSTRUMENTATION_AWS_LAMBDA_FLUSH_TIMEOUT`if the backend / network reacts slowly.
+    - Increase `OTEL_INSTRUMENTATION_AWS_LAMBDA_FLUSH_TIMEOUT` if the backend / network responds slowly.
 2. If metrics are not showing in APM
     - Set `VERBOSE` to `true` and check the CloudWatch logs.   
 
