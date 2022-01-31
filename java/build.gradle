@@ -8,8 +8,8 @@ description = "Splunk distribution of OpenTelemetry Lambda"
 
 ext {
     versions = [
-            opentelemetry: '1.7.0',
-            opentelemetryalpha: '1.7.0-alpha'
+            opentelemetry: '1.10.0',
+            opentelemetryalpha: '1.10.0-alpha'
     ]
 }
 
@@ -40,6 +40,7 @@ dependencies {
     compileOnly("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure")
     // AWS
     compileOnly("io.opentelemetry.instrumentation:opentelemetry-aws-lambda-1.0")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.1")
     // exporters
     compileOnly("io.opentelemetry:opentelemetry-exporter-logging")
     implementation("io.opentelemetry:opentelemetry-exporter-otlp-http-trace")
@@ -67,12 +68,11 @@ configurations.runtimeElements {
     exclude group: 'io.opentelemetry', module: 'opentelemetry-exporter-otlp-common'
     exclude group: 'io.opentelemetry', module: 'opentelemetry-semconv'
     exclude group: 'org.slf4j', module: 'slf4j-api'
-    exclude group: 'com.google.code.gson'
-    exclude group: 'io.grpc'
-    exclude group: 'com.google.protobuf'
     exclude group: 'com.google.guava'
-    exclude group: 'com.fasterxml.jackson.core'
-    exclude group: 'com.fasterxml.jackson.jr'
+    exclude group: 'org.jetbrains.kotlin'
+    exclude group: 'com.squareup.okhttp3'
+    exclude group: 'com.squareup.okio'
+    exclude group: 'com.fasterxml.jackson.core', module: 'jackson-core'
 }
 
 repositories {
