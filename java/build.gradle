@@ -40,7 +40,6 @@ dependencies {
     compileOnly("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure")
     // AWS
     compileOnly("io.opentelemetry.instrumentation:opentelemetry-aws-lambda-1.0")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.1")
     // exporters
     compileOnly("io.opentelemetry:opentelemetry-exporter-logging")
     implementation("io.opentelemetry:opentelemetry-exporter-otlp-http-trace")
