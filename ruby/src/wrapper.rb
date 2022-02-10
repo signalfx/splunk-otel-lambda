@@ -93,7 +93,7 @@ end
 class OtelWrapper
 
   def initialize
-    @flush_timeout = ENV.fetch('OTEL_INSTRUMENTATION_AWS_LAMBDA_FLUSH_TIMEOUT', 30000)
+    @flush_timeout = ENV.fetch('OTEL_INSTRUMENTATION_AWS_LAMBDA_FLUSH_TIMEOUT', "30000").to_i
     @tracer_provider = OpenTelemetry.tracer_provider
     @tracer = @tracer_provider.tracer('OpenTelemetry::Instrumentation::AWS::Lambda')
     @lambda_handler = OriginalHandler.new()
