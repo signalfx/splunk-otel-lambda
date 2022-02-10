@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# no metrics
+# no otel metrics
 export OTEL_METRICS_EXPORTER=none
 
 # otlp traces exporter
@@ -21,6 +21,8 @@ then
     export OTEL_EXPORTER_OTLP_TRACES_HEADERS="$HEADER""${OTEL_EXPORTER_OTLP_TRACES_HEADERS}"
 fi
 
+# default flush timeout if not set
+export OTEL_INSTRUMENTATION_AWS_LAMBDA_FLUSH_TIMEOUT="${OTEL_INSTRUMENTATION_AWS_LAMBDA_FLUSH_TIMEOUT:-30000}"
 
 # splunk REALM support
 if [ -n "$SPLUNK_REALM" ]
