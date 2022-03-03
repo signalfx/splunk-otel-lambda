@@ -14,13 +14,33 @@
  * limitations under the License.
  */
 
-import { NodeTracerConfig } from '@opentelemetry/sdk-trace-node';
-import { awsLambdaDetector } from '@opentelemetry/resource-detector-aws';
-import { detectResources, envDetector, processDetector } from '@opentelemetry/resources';
 import { diag, DiagConsoleLogger, isSpanContextValid, TraceFlags } from "@opentelemetry/api";
+import { NodeTracerConfig } from '@opentelemetry/sdk-trace-node';
 import { getEnv } from '@opentelemetry/core';
-import { startTracing } from '@splunk/otel';
+import { detectResources, envDetector, processDetector } from '@opentelemetry/resources';
+
+import { awsLambdaDetector } from '@opentelemetry/resource-detector-aws';
 import type { ResponseHook } from '@opentelemetry/instrumentation-aws-lambda';
+
+import { AwsLambdaInstrumentation } from '@opentelemetry/instrumentation-aws-lambda';
+import { DnsInstrumentation } from '@opentelemetry/instrumentation-dns';
+import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express';
+import { GraphQLInstrumentation } from '@opentelemetry/instrumentation-graphql';
+import { GrpcInstrumentation } from '@opentelemetry/instrumentation-grpc';
+import { HapiInstrumentation } from '@opentelemetry/instrumentation-hapi';
+import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
+import { IORedisInstrumentation } from '@opentelemetry/instrumentation-ioredis';
+import { KoaInstrumentation } from '@opentelemetry/instrumentation-koa';
+import { MongoDBInstrumentation } from '@opentelemetry/instrumentation-mongodb';
+import { MySQLInstrumentation } from '@opentelemetry/instrumentation-mysql';
+import { NetInstrumentation } from '@opentelemetry/instrumentation-net';
+import { PgInstrumentation } from '@opentelemetry/instrumentation-pg';
+import { RedisInstrumentation } from '@opentelemetry/instrumentation-redis';
+
+const { AwsInstrumentation } = require('@opentelemetry/instrumentation-aws-sdk');
+
+import { startTracing } from '@splunk/otel';
+
 
 // configure lambda logging
 const logLevel = getEnv().OTEL_LOG_LEVEL
@@ -31,21 +51,7 @@ let forceFlushTimeoutMillisEnv = parseInt(process.env.OTEL_INSTRUMENTATION_AWS_L
 const forceFlushTimeoutMillis = (isNaN(forceFlushTimeoutMillisEnv) ? 30000 : forceFlushTimeoutMillisEnv)
 diag.debug(`ForceFlushTimeout set to: ${forceFlushTimeoutMillis}`);
 
-const { AwsInstrumentation } = require('@opentelemetry/instrumentation-aws-sdk');
-const { AwsLambdaInstrumentation } = require('@opentelemetry/instrumentation-aws-lambda');
-const { DnsInstrumentation } = require('@opentelemetry/instrumentation-dns');
-const { ExpressInstrumentation } = require('@opentelemetry/instrumentation-express');
-const { GraphQLInstrumentation } = require('@opentelemetry/instrumentation-graphql');
-const { GrpcInstrumentation } = require('@opentelemetry/instrumentation-grpc');
-const { HapiInstrumentation } = require('@opentelemetry/instrumentation-hapi');
-const { HttpInstrumentation } = require('@opentelemetry/instrumentation-http');
-const { IORedisInstrumentation } = require('@opentelemetry/instrumentation-ioredis');
-const { KoaInstrumentation } = require('@opentelemetry/instrumentation-koa');
-const { MongoDBInstrumentation } = require('@opentelemetry/instrumentation-mongodb');
-const { MySQLInstrumentation } = require('@opentelemetry/instrumentation-mysql');
-const { NetInstrumentation } = require('@opentelemetry/instrumentation-net');
-const { PgInstrumentation } = require('@opentelemetry/instrumentation-pg');
-const { RedisInstrumentation } = require('@opentelemetry/instrumentation-redis');
+
 
 // AWS lambda instrumentation response hook for Server-Timing support
 function getEnvBoolean(key: string, defaultValue = true) {
@@ -142,4 +148,3 @@ async function initializeProvider() {
 }
 
 initializeProvider()
-
