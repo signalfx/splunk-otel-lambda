@@ -1,0 +1,2 @@
+[opentelemetry_pre_instrument]
+splunk-lambda-sls-zip = splunk_lambda:splunk_lambda_sls_zip_handler
