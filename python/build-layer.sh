@@ -29,6 +29,7 @@ echo "Preparing Splunk layer"
 # copy Splunk scripts (delegating to OTEL ones)
 cp otel-instrument $OTEL_PYTHON_DIR/$DISTRO_DIR/
 cp ../scripts/* $OTEL_PYTHON_DIR/$DISTRO_DIR/
+cp -r ./src/* $OTEL_PYTHON_DIR/$DISTRO_DIR/python/
 cd $OTEL_PYTHON_DIR/$DISTRO_DIR
 
 echo "Performing manual size optimizations"
