@@ -1,4 +1,5 @@
 .idea
+java/.java-version
 java/.gradle
 java/build
 /nodejs/tsconfig.tsbuildinfo

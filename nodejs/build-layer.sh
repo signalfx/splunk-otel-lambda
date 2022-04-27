@@ -39,4 +39,5 @@ find . -path "./nodejs/node_modules/pako/*" \( -name "dist" \) -type d -prune -e
 # ZIP IT
 echo "Creating layer ZIP"
 zip -qr9 layer.zip *
+
 echo "Layer has been prepared"; exit 0
