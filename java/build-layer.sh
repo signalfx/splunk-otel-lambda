@@ -35,12 +35,10 @@ echo "Performing manual size optimisations"
 pushd java/lib
 # UNUSED metrics
 rm opentelemetry-exporter-otlp-metrics-*.jar
-# UNUSED grpc and deps
-rm grpc-*.jar
-rm guava-*.jar
-rm gson-*.jar
 popd
 
 # ZIP IT
 echo "Creating layer ZIP"
 zip -qr opentelemetry-java-wrapper.zip *
+
+echo "Layer has been prepared"; exit 0

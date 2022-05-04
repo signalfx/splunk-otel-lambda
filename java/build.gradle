@@ -8,8 +8,8 @@ description = "Splunk distribution of OpenTelemetry Lambda"
 
 ext {
     versions = [
-            opentelemetry: '1.10.0',
-            opentelemetryalpha: '1.10.0-alpha'
+            opentelemetry: '1.11.1',
+            opentelemetryalpha: '1.11.1-alpha'
     ]
 }
 
@@ -31,15 +31,13 @@ build.finalizedBy(copyDependencies)
 dependencies {
     // OpenTelemetry
     // BOMs
-    implementation(platform("io.opentelemetry:opentelemetry-bom:${versions.opentelemetry}"))
-    implementation(platform("io.opentelemetry:opentelemetry-bom-alpha:${versions.opentelemetryalpha}"))
     implementation(platform("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom-alpha:${versions.opentelemetryalpha}"))
 
     // API / SDK
     compileOnly("io.opentelemetry:opentelemetry-api")
     compileOnly("io.opentelemetry:opentelemetry-sdk-extension-autoconfigure")
     // AWS
-    compileOnly("io.opentelemetry.instrumentation:opentelemetry-aws-lambda-1.0")
+    compileOnly("io.opentelemetry.instrumentation:opentelemetry-aws-lambda-events-2.2")
     // exporters
     compileOnly("io.opentelemetry:opentelemetry-exporter-logging")
     implementation("io.opentelemetry:opentelemetry-exporter-otlp-http-trace")
@@ -50,7 +48,7 @@ dependencies {
 
     // AWS lambda
     // events
-    implementation("com.amazonaws:aws-lambda-java-events:3.10.0")
+    implementation("com.amazonaws:aws-lambda-java-events:3.11.0")
     // lambda logging
     implementation("com.amazonaws:aws-lambda-java-log4j2:1.5.1")
     implementation("org.apache.logging.log4j:log4j-slf4j18-impl:2.17.2")
