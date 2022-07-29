@@ -8,7 +8,7 @@ echo "Modify dependencies and script for Splunk integration"
 pushd "$OTEL_PYTHON_DIR"
 
 cd "$SOURCES_DIR"
-sed -i 's/^opentelemetry-distro.*/splunk-opentelemetry[all]==1.5.0/g' requirements.txt
+sed -i 's/^opentelemetry-distro.*/splunk-opentelemetry[all]==1.6.0/g' requirements.txt
 sed -i 's/^docker run --rm/docker run/g'  ../../build.sh
 sed -i 's/opentelemetry-instrument/splunk-py-trace/g'  otel-instrument
 echo "Modified python wrapper requirements:"
