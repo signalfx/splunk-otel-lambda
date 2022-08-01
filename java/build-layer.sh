@@ -33,8 +33,9 @@ cp ../scripts/* $OTEL_JAVA_DIR/$DISTRO_DIR/
 cd $OTEL_JAVA_DIR/$DISTRO_DIR
 echo "Performing manual size optimisations"
 pushd java/lib
-# UNUSED metrics
-rm opentelemetry-exporter-otlp-metrics-*.jar
+# UNUSED metrics - seems to have disappeared from upstream?
+# FIXME Make this silent for now, revisit in the future
+rm -f opentelemetry-exporter-otlp-metrics-*.jar
 popd
 
 # ZIP IT
