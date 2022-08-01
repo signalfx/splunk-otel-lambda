@@ -34,7 +34,9 @@ cd $OTEL_JAVA_DIR/$DISTRO_DIR
 echo "Performing manual size optimisations"
 pushd java/lib
 # UNUSED metrics
-rm opentelemetry-exporter-otlp-metrics-*.jar
+# FIXME JB remove debug steps here
+ls -l
+rm -f opentelemetry-exporter-otlp-metrics-*.jar
 popd
 
 # ZIP IT
