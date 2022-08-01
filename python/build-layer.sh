@@ -10,6 +10,7 @@ pushd "$OTEL_PYTHON_DIR"
 cd "$SOURCES_DIR"
 sed -i 's/^opentelemetry-distro.*/splunk-opentelemetry[all]==1.7.0/g' requirements.txt
 sed -i 's/^opentelemetry-instrumentation-aws-lambda.*/opentelemetry-instrumentation-aws-lambda==0.32b0/g' requirements.txt
+sed -i 's/^opentelemetry-exporter-otlp-proto-http.*/opentelemetry-exporter-otlp-proto-http==1.12.0rc2/g' requirements.txt
 sed -i 's/^docker run --rm/docker run/g'  ../../build.sh
 sed -i 's/opentelemetry-instrument/splunk-py-trace/g'  otel-instrument
 echo "Modified python wrapper requirements:"
