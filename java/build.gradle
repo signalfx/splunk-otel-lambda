@@ -1,6 +1,6 @@
 plugins {
     id "java"
-    id "com.diffplug.spotless" version "6.9.1" apply false
+    id "com.diffplug.spotless" version "6.10.0" apply false
 }
 
 group = 'com.splunk.public'
