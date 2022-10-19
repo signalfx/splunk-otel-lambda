@@ -225,8 +225,8 @@ SPLUNK_REALM: us0
 2. If metrics are not showing in APM
     - Set `VERBOSE` to `true` and check the CloudWatch logs.   
 
-## License and versioning
+## License
 
-The project is released under the terms of the Apache Software License version 2.0. For more details, see [the license file](./LICENSE).
+Splunk OpenTelemetry Lambda is licensed under the terms of the Apache Software License version 2.0. For more details, see [the license file](./LICENSE).
 
 >ℹ️&nbsp;&nbsp;SignalFx was acquired by Splunk in October 2019. See [Splunk SignalFx](https://www.splunk.com/en_us/investor-relations/acquisitions/signalfx.html) for more information.
