@@ -8,3 +8,4 @@ java/build
 /ruby/build/
 /ruby/Gemfile.lock
 /ruby/.bundle/
+nodejs/node_modules
