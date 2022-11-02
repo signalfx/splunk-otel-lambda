@@ -11,7 +11,7 @@ echo "Installing dependencies..."
 bundle install --path=build
 
 echo "Coping gems to layer structure..."
-mv -f build/ruby/2.7.0 build/ruby/gems/ && cp -r cached-gems/2.7.0 build/ruby/gems/
+mv -f build/ruby/2.7.0 build/ruby/gems/
 
 echo "Optimizing size..."
 rm -rf build/ruby/gems/2.7.0/cache
