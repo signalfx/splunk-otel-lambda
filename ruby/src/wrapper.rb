@@ -22,31 +22,6 @@ class ServerTimingHeader
     response.respond_to?(:key) && response.key?(:body) && response.key?(:statusCode)
   end
 
-  def append_header(headers, header, value)
-    if !headers.key?(header)
-      headers[header] = value
-      return
-    end
-    # append to existing
-    values = headers[header]
-    if values.kind_of(Array)
-      values.push(value)
-    elsif values.kind_of(String)
-      headers[header] = "#{values}, #{value}"
-    end
-  end
-
-  def server_timing_header_value(span)
-
-    span_context = span.context
-    trace_id = span_context.hex_trace_id
-    span_id = span_context.hex_span_id
-    sampled = span_context.trace_flags.sampled?
-    flags = sampled ? '01' : '00'
-
-    "traceparent;desc=\"00-#{trace_id}-#{span_id}-#{flags}\""
-  end
-
   def set_for_response(response:, span:)
 
     if !is_api_gateway_response?(response) || !is_enabled? || !span.context.valid?
@@ -57,8 +32,7 @@ class ServerTimingHeader
       response["headers"] = {}
     end
 
-    append_header(response["headers"], 'Access-Control-Expose-Headers', 'Server-Timing')
-    append_header(response["headers"], 'Server-Timing', server_timing_header_value(span))
+    response["headers"] = Splunk::Otel::Common.rum_headers(response["headers"])
   end
 end
 
