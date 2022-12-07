@@ -47,6 +47,7 @@
     "@opentelemetry/instrumentation-net": "0.28.0",
     "@opentelemetry/instrumentation-pg": "0.28.0",
     "@opentelemetry/instrumentation-redis": "0.28.0",
+    "@opentelemetry/instrumentation-winston": "0.28.0",
     "@opentelemetry/resource-detector-aws": "1.1.2",
     "@opentelemetry/resources": "1.1.0",
     "@splunk/otel": "1.4.1",

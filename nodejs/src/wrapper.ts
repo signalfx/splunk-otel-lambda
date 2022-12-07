@@ -36,6 +36,7 @@ import { MySQLInstrumentation } from '@opentelemetry/instrumentation-mysql';
 import { NetInstrumentation } from '@opentelemetry/instrumentation-net';
 import { PgInstrumentation } from '@opentelemetry/instrumentation-pg';
 import { RedisInstrumentation } from '@opentelemetry/instrumentation-redis';
+import { WinstonInstrumentation } from '@opentelemetry/instrumentation-winston';
 
 const { AwsInstrumentation } = require('@opentelemetry/instrumentation-aws-sdk');
 
@@ -134,6 +135,7 @@ const instrumentations = [
   new NetInstrumentation(),
   new PgInstrumentation(),
   new RedisInstrumentation(),
+  new WinstonInstrumentation(),
 ];
 
 async function initializeProvider() {
