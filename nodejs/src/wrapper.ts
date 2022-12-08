@@ -39,7 +39,7 @@ import { RedisInstrumentation } from '@opentelemetry/instrumentation-redis';
 
 const { AwsInstrumentation } = require('@opentelemetry/instrumentation-aws-sdk');
 
-import { startTracing } from '@splunk/otel';
+import { start } from '@splunk/otel';
 
 
 // configure lambda logging
@@ -144,7 +144,7 @@ async function initializeProvider() {
     resource,
     forceFlushTimeoutMillis,
   };
-  startTracing({tracerConfig: tracerConfig, instrumentations: instrumentations})
+  start({tracing: {tracerConfig: tracerConfig, instrumentations: instrumentations}})
 }
 
 initializeProvider()
