@@ -45,8 +45,7 @@ All components are preconfigured to use Splunk Observability Cloud as the tracin
 2. Traces export
 
     By default:
-    - Node.js wrapper uses the `Jaeger/Thrift` exporter
-    - all other wrappers use the `OTLP/http/protobuf` exporter. 
+    - All wrappers use the `OTLP/http/protobuf` exporter. 
     If the `SPLUNK_REALM` environment variable is set, the value of the`OTEL_EXPORTER_OTLP_ENDPOINT` environment variable is `https://ingest.${SPLUNK_REALM}.signalfx.com/v2/trace/otlp`, the direct ingest URL for Splunk Observability Cloud. 
     To make it work, you need to set following variables:
      ```
@@ -56,12 +55,6 @@ All components are preconfigured to use Splunk Observability Cloud as the tracin
     If you want to change the endpoint, set this environment variable in your Lambda function code:
     ```
     OTEL_EXPORTER_OTLP_ENDPOINT: <endpoint URL>
-    ```
-    In the case of Jaeger Thrift exporter modified by Splunk (`jaeger-thrift-splunk`), the endpoint (`OTEL_EXPORTER_JAEGER_ENDPOINT`) will be set to `https://ingest.${SPLUNK_REALM}.signalfx.com/v2/trace`, the direct ingest URL for Splunk Observability Cloud if `SPLUNK_REALM` property is set as well. 
-    If you want to change the endpoint, set this environment variable in your Lambda function code:
-    ```
-    SPLUNK_ACCESS_TOKEN: <org_access_token>
-    OTEL_EXPORTER_JAEGER_ENDPOINT: <endpoint URL>
     ```
 
 3. OpenTelemetry Metrics export
