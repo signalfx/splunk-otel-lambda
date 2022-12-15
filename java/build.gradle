@@ -52,7 +52,7 @@ dependencies {
     // lambda logging
     implementation("com.amazonaws:aws-lambda-java-log4j2:1.5.1")
     implementation("org.apache.logging.log4j:log4j-slf4j18-impl:2.17.2")
-    implementation("org.apache.logging.log4j:log4j-core:2.17.2")
+    implementation("org.apache.logging.log4j:log4j-core:2.19.0")
 }
 
 // need to exclude "parent" dependencies to avoid clash upon copy / zip of the final layer
