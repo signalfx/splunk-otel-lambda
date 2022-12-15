@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# node.js does not support otlp/http/protobuf so for direct ingest need to use JTSplunk
-export OTEL_TRACES_EXPORTER="${OTEL_TRACES_EXPORTER:-jaeger-thrift-splunk}"
+export OTEL_TRACES_EXPORTER="${OTEL_TRACES_EXPORTER:-otlp}"
 
 source /opt/splunk-default-config
 
