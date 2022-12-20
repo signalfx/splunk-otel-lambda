@@ -32,6 +32,6 @@ cp src/*.rb build/ruby/lib
 
 echo "Packaging dependencies into zip archive..."
 cd build
-zip -qr9 ruby.zip *
+zip -qr9 ruby.zip ./*
 
 echo "Layer has been prepared"; exit 0

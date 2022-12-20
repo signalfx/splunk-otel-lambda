@@ -22,7 +22,7 @@ echo "Building OTel Lambda python"
 rm -rf build
 ./build.sh
 cd $DISTRO_DIR
-docker cp `docker ps --all | grep aws-otel-lambda-python-layer | cut -d' ' -f1 | head -1`:/out/layer.zip .
+docker cp "$(docker ps --all | grep aws-otel-lambda-python-layer | cut -d' ' -f1 | head -1)":/out/layer.zip .
 unzip -qo layer.zip && rm layer.zip
 mv otel-instrument otel-instrument-upstream
 
@@ -48,6 +48,6 @@ find . -name __pycache__ -type d -prune -exec rm -rf {} \;
 
 # ZIP IT
 echo "Creating layer ZIP"
-zip -qr layer.zip *
+zip -qr layer.zip ./*
 
 echo "Layer has been prepared"; exit 0

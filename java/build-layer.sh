@@ -40,6 +40,6 @@ popd
 
 # ZIP IT
 echo "Creating layer ZIP"
-zip -qr opentelemetry-java-wrapper.zip *
+zip -qr opentelemetry-java-wrapper.zip ./*
 
 echo "Layer has been prepared"; exit 0
