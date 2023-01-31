@@ -25,7 +25,7 @@ cd $DISTRO_DIR
 docker cp "$(docker ps --all | grep aws-otel-lambda-python-layer | cut -d' ' -f1 | head -1)":/out/layer.zip .
 unzip -qo layer.zip && rm layer.zip
 # inject our script into upstream wrapper
-sed -i '2isource splunk-default-config' otel-instrument
+sed -i '2isource /opt/splunk-default-config' otel-instrument
 
 popd
 
