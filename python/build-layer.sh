@@ -24,13 +24,13 @@ rm -rf build
 cd $DISTRO_DIR
 docker cp "$(docker ps --all | grep aws-otel-lambda-python-layer | cut -d' ' -f1 | head -1)":/out/layer.zip .
 unzip -qo layer.zip && rm layer.zip
-mv otel-instrument otel-instrument-upstream
+# inject our script into upstream wrapper
+sed -i '2isource splunk-default-config' otel-instrument
 
 popd
 
 echo "Preparing Splunk layer"
-# copy Splunk scripts (delegating to OTEL ones)
-cp otel-instrument $OTEL_PYTHON_DIR/$DISTRO_DIR/
+# copy Splunk scripts
 cp ../scripts/* $OTEL_PYTHON_DIR/$DISTRO_DIR/
 cp -r ./src/* $OTEL_PYTHON_DIR/$DISTRO_DIR/python/
 cd $OTEL_PYTHON_DIR/$DISTRO_DIR
