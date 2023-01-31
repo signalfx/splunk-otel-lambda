@@ -1,7 +1,4 @@
 #!/bin/bash
-
-export OTEL_TRACES_EXPORTER="${OTEL_TRACES_EXPORTER:-otlp}"
-
 source /opt/splunk-default-config
 
 export NODE_OPTIONS="${NODE_OPTIONS} --require /opt/wrapper.js"
