@@ -21,9 +21,15 @@ echo "Preparing Splunk layer"
 cd $DISTRO_DIR
 unzip -qo opentelemetry-java-wrapper.zip
 rm opentelemetry-java-wrapper.zip
-mv otel-handler otel-handler-upstream
-mv otel-stream-handler otel-stream-handler-upstream
-mv otel-proxy-handler otel-proxy-handler-upstream
+sed -i '2isource /opt/splunk-default-config' otel-handler
+sed -i '2isource /opt/splunk-default-config' otel-stream-handler
+sed -i '2isource /opt/splunk-default-config' otel-proxy-handler
+sed -i '3isource /opt/splunk-java-config' otel-handler
+sed -i '3isource /opt/splunk-java-config' otel-stream-handler
+sed -i '3isource /opt/splunk-java-config' otel-proxy-handler
+# proxy handler has one more special change
+sed -i 's/io.opentelemetry.instrumentation.awslambdaevents.v2_2.TracingRequestApiGatewayWrapper/com.splunk.support.lambda.TracingRequestApiGatewayWrapper/g' otel-proxy-handler
+
 popd
 
 # copy Splunk scripts (delegating to OTEL ones)
