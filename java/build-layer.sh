@@ -11,6 +11,13 @@ popd
 echo "Building Splunk wrapper"
 ./gradlew clean build
 mkdir -p $OTEL_JAVA_DIR/layer-wrapper/build/extensions
+# FIXME adding our stuff as an extension causes duplicate entry
+# build errors, but what libs are actually needed to copy through here?
+# What is provided by sdk runtime to the extension (e.g., logging)?
+rm ./build/libs/opentelemetry-sdk-logs-1.22.0-alpha.jar
+rm ./build/libs/opentelemetry-api-logs-1.22.0-alpha.jar
+rm ./build/libs/opentelemetry-exporter-otlp-1.22.0.jar
+rm ./build/libs/opentelemetry-sdk-extension-autoconfigure-spi-1.22.0.jar
 cp ./build/libs/*.jar $OTEL_JAVA_DIR/layer-wrapper/build/extensions
 
 echo "Building OTEL wrapper"
