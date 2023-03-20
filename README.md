@@ -24,7 +24,7 @@ Splunk OpenTelemetry Lambda is a downstream distribution of the [OpenTelemetry L
 
 The following languages are currently supported:
 
-  Java
+- Java
 - Python
 - Node.js
 - Ruby
