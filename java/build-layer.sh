@@ -31,9 +31,11 @@ rm opentelemetry-java-wrapper.zip
 sed -i '2isource /opt/splunk-default-config' otel-handler
 sed -i '2isource /opt/splunk-default-config' otel-stream-handler
 sed -i '2isource /opt/splunk-default-config' otel-proxy-handler
+sed -i '2isource /opt/splunk-default-config' otel-sqs-handler
 sed -i '3isource /opt/splunk-java-config' otel-handler
 sed -i '3isource /opt/splunk-java-config' otel-stream-handler
 sed -i '3isource /opt/splunk-java-config' otel-proxy-handler
+sed -i '3isource /opt/splunk-java-config' otel-sqs-handler
 # proxy handler has one more special change
 sed -i 's/io.opentelemetry.instrumentation.awslambdaevents.v2_2.TracingRequestApiGatewayWrapper/com.splunk.support.lambda.TracingRequestApiGatewayWrapper/g' otel-proxy-handler
 
