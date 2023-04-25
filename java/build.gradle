@@ -8,8 +8,8 @@ description = "Splunk distribution of OpenTelemetry Lambda"
 
 ext {
     versions = [
-            opentelemetry: '1.22.1',
-            opentelemetryalpha: '1.22.1-alpha'
+            opentelemetry: '1.24.0',
+            opentelemetryalpha: '1.24.0-alpha'
     ]
 }
 
