@@ -23,21 +23,6 @@ import { awsLambdaDetector } from '@opentelemetry/resource-detector-aws';
 import type { ResponseHook } from '@opentelemetry/instrumentation-aws-lambda';
 
 import { AwsLambdaInstrumentation } from '@opentelemetry/instrumentation-aws-lambda';
-import { DnsInstrumentation } from '@opentelemetry/instrumentation-dns';
-import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express';
-import { GraphQLInstrumentation } from '@opentelemetry/instrumentation-graphql';
-import { GrpcInstrumentation } from '@opentelemetry/instrumentation-grpc';
-import { HapiInstrumentation } from '@opentelemetry/instrumentation-hapi';
-import { HttpInstrumentation } from '@opentelemetry/instrumentation-http';
-import { IORedisInstrumentation } from '@opentelemetry/instrumentation-ioredis';
-import { KoaInstrumentation } from '@opentelemetry/instrumentation-koa';
-import { MongoDBInstrumentation } from '@opentelemetry/instrumentation-mongodb';
-import { MySQLInstrumentation } from '@opentelemetry/instrumentation-mysql';
-import { NetInstrumentation } from '@opentelemetry/instrumentation-net';
-import { PgInstrumentation } from '@opentelemetry/instrumentation-pg';
-import { RedisInstrumentation } from '@opentelemetry/instrumentation-redis';
-
-const { AwsInstrumentation } = require('@opentelemetry/instrumentation-aws-sdk');
 
 import { start } from '@splunk/otel';
 
@@ -115,25 +100,9 @@ const responseHook: ResponseHook = (span, data) => {
   };
 
 const instrumentations = [
-  new AwsInstrumentation({
-    suppressInternalInstrumentation: true,
-  }),
   new AwsLambdaInstrumentation({
     responseHook
   }),
-  new DnsInstrumentation(),
-  new ExpressInstrumentation(),
-  new GraphQLInstrumentation(),
-  new GrpcInstrumentation(),
-  new HapiInstrumentation(),
-  new HttpInstrumentation(),
-  new IORedisInstrumentation(),
-  new KoaInstrumentation(),
-  new MongoDBInstrumentation(),
-  new MySQLInstrumentation(),
-  new NetInstrumentation(),
-  new PgInstrumentation(),
-  new RedisInstrumentation(),
 ];
 
 async function initializeProvider() {

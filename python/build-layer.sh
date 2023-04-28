@@ -10,9 +10,8 @@ pushd "$OTEL_PYTHON_DIR"
 cd "$SOURCES_DIR"
 sed -i 's/^opentelemetry-distro.*/splunk-opentelemetry[all]==1.9.1/g' requirements.txt
 sed -i 's/^opentelemetry-exporter-otlp-proto-http.*/opentelemetry-exporter-otlp-proto-http==1.15.0/g' requirements.txt
-# Leaving these in place for future use even though current versions are fresh
-sed -i 's/0.36b0/0.36b0/g' requirements-nodeps.txt
-sed -i 's/0.36b0/0.36b0/g' requirements.txt
+sed -i 's/0.38b0/0.36b0/g' requirements-nodeps.txt
+sed -i 's/0.38b0/0.36b0/g' requirements.txt
 sed -i 's/^docker run --rm/docker run/g'  ../../build.sh
 sed -i 's/opentelemetry-instrument/splunk-py-trace/g'  otel-instrument
 echo "Modified python wrapper requirements:"
