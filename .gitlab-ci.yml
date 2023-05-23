@@ -1,3 +1,8 @@
+include:
+  - project: "observability/shared/gitlab-jobs"
+    file:
+      - "oss-scan-template-v1.yml"
+
 # verification job run upon GitLab PR
 gitlab-pr-build:
   only:
