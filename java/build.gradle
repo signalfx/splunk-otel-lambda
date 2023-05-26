@@ -23,7 +23,7 @@ java {
 }
 
 task copyDependencies(type: Copy) {
-    from configurations.default
+    from configurations.runtimeClasspath
     into 'build/libs'
 }
 build.finalizedBy(copyDependencies)
