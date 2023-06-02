@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require 'opentelemetry/exporter/otlp/version'
 require "splunk/otel"
 require 'opentelemetry/sdk'
 require 'opentelemetry/exporter/otlp'
