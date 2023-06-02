@@ -25,6 +25,7 @@ import type { ResponseHook } from '@opentelemetry/instrumentation-aws-lambda';
 import { AwsLambdaInstrumentation } from '@opentelemetry/instrumentation-aws-lambda';
 
 import { start } from '@splunk/otel';
+import { getInstrumentations } from '@splunk/otel/lib/instrumentations';
 
 
 // configure lambda logging
@@ -103,6 +104,7 @@ const instrumentations = [
   new AwsLambdaInstrumentation({
     responseHook
   }),
+  ...getInstrumentations(),
 ];
 
 async function initializeProvider() {
