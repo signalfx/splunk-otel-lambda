@@ -8,7 +8,7 @@ echo "Modify dependencies and script for Splunk integration"
 pushd "$OTEL_PYTHON_DIR"
 
 cd "$SOURCES_DIR"
-sed -i 's/^opentelemetry-distro.*/splunk-opentelemetry[all]==1.10.0/g' requirements.txt
+sed -i 's/^opentelemetry-distro.*/splunk-opentelemetry[all]==1.11.0/g' requirements.txt
 sed -i 's/^opentelemetry-exporter-otlp-proto-http.*/opentelemetry-exporter-otlp-proto-http==1.18.0/g' requirements.txt
 # Even if this regex does nothing, leave these lines in to make later updates easier
 sed -i 's/0.39b0/0.39b0/g' requirements-nodeps.txt
