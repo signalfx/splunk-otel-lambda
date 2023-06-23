@@ -23,7 +23,7 @@ echo "Building OTel Lambda python"
 rm -rf build
 ./build.sh
 cd $DISTRO_DIR
-docker cp "$(docker ps --all | grep aws-otel-lambda-python-layer | cut -d' ' -f1 | head -1)":/out/layer.zip .
+docker cp "$(docker ps --all | grep aws-otel-lambda-python-layer | cut -d' ' -f1 | head -1)":/out/opentelemetry-python-layer.zip ./layer.zip
 unzip -qo layer.zip && rm layer.zip
 mv otel-instrument otel-instrument-upstream
 
