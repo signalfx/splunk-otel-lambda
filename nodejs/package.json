@@ -1,6 +1,6 @@
 {
   "name": "@splunk/otel-lambda",
-  "version": "0.15.0",
+  "version": "0.14.0",
   "description": "Layer including OpenTelemetry SDK for use with AWS Lambda enhanced by Splunk.",
   "repository": "git@github.com:signalfx/splunk-otel-lambda.git",
   "author": "Splunk <splunk-oss@splunk.com>",
