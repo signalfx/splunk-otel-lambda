@@ -1,10 +1,11 @@
 # Changelog
 
-All notable changes to this repository are documented in this file.
+## [Unreleased]
 
-The format is based on the [Splunk GDI specification](https://github.com/signalfx/gdi-specification/blob/v1.0.0/specification/repository.md),
-and this repository adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+-  
 
-## Unreleased
+## 0.6.5
 
-### General
+- Updated python to splunk-otel 1.12.0
+- Updated java dependencies, including otel-java 1.29.0
+- Updated to latest upstream otel-lambda
