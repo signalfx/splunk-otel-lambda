@@ -1,7 +1,16 @@
 #!/bin/bash
-# specifically unset these so language-level instrumentations won't talk directly to ingest
-unset SPLUNK_REALM
-unset SPLUNK_ACCESS_TOKEN
+set -e
+
+# specifically unset splunk variables so language-level instrumentations won't talk
+# directly to ingest (unless collector is disabled)
+SLLCE="${SPLUNK_LAMBDA_LOCAL_COLLECTOR_ENABLED}"
+# case conversion only in bash 4+... :-(
+if [ "${SLLCE}" != "false" ] && [ "${SLLCE}" != "FALSE" ] && [ "${SLLCE}" != "0" ]
+then
+  unset SPLUNK_REALM
+  unset SPLUNK_ACCESS_TOKEN
+fi
+
 
 # no otel metrics
 export OTEL_METRICS_EXPORTER=none
