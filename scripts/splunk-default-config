@@ -26,5 +26,44 @@ export OTEL_PROPAGATORS="${OTEL_PROPAGATORS:-tracecontext,baggage}"
 # no sampling
 export OTEL_TRACES_SAMPLER="${OTEL_TRACES_SAMPLER:-always_on}"
 
+# splunk token header if OLTP
+if [[ -n "$SPLUNK_ACCESS_TOKEN" && "$OTEL_TRACES_EXPORTER" = "otlp" ]]
+then
+    HEADER="X-SF-TOKEN=$SPLUNK_ACCESS_TOKEN,"
+    export OTEL_EXPORTER_OTLP_TRACES_HEADERS="$HEADER""${OTEL_EXPORTER_OTLP_TRACES_HEADERS}"
+fi
+
 # default flush timeout if not set
 export OTEL_INSTRUMENTATION_AWS_LAMBDA_FLUSH_TIMEOUT="${OTEL_INSTRUMENTATION_AWS_LAMBDA_FLUSH_TIMEOUT:-30000}"
+
+# splunk REALM support
+if [ -n "$SPLUNK_REALM" ]
+then
+
+    if [ -z "$SPLUNK_METRICS_ENDPOINT" ]
+    then
+        export SPLUNK_METRICS_ENDPOINT="https://ingest.${SPLUNK_REALM}.signalfx.com"
+    fi
+
+    if [[ "$OTEL_TRACES_EXPORTER" = *"otlp"* && -z "$OTEL_EXPORTER_OTLP_TRACES_ENDPOINT" ]]
+    then
+        export OTEL_EXPORTER_OTLP_TRACES_ENDPOINT="https://ingest.${SPLUNK_REALM}.signalfx.com/v2/trace/otlp"
+    elif [[ "$OTEL_TRACES_EXPORTER" = *"jaeger"* && -z "$OTEL_EXPORTER_JAEGER_ENDPOINT" ]]
+    then
+        export OTEL_EXPORTER_JAEGER_ENDPOINT="https://ingest.${SPLUNK_REALM}.signalfx.com/v2/trace"
+    fi
+fi
+
+# validation - realm must have token
+if [[ -n "$SPLUNK_REALM" && -z "$SPLUNK_ACCESS_TOKEN" ]]
+then
+    echo "[ERROR] SPLUNK_REALM is set, but SPLUNK_ACCESS_TOKEN is not set. To export data to Splunk Observability Cloud, define a Splunk Access Token"
+fi
+
+# FIXME drop this for sure or adjust it according to collector presence
+# validation - either realm or relevant exporter endpoint
+#if [[ -z "$SPLUNK_REALM" && ( "$OTEL_TRACES_EXPORTER" = *"otlp"* && -z "$OTEL_EXPORTER_OTLP_ENDPOINT" || "$OTEL_TRACES_EXPORTER" = *"jaeger"* && -z "$OTEL_EXPORTER_JAEGER_ENDPOINT" ) ]]
+#then
+#    echo "[ERROR] Exporter endpoint must be set when SPLUNK_REALM is not set. To export data, either set a realm and access token or a custom exporter endpoint."
+#fi
+
