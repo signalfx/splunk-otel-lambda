@@ -2,7 +2,9 @@
 
 ## [Unreleased]
 
--  
+- Added SPLUNK_EXTENSION_WRAPPER_ENABLED and
+  SPLUNK_LAMBDA_LOCAL_COLLECTOR_ENABLED to control execution of
+  these extensions.
 
 ## 0.6.5
 
