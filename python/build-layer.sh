@@ -8,11 +8,11 @@ echo "Modify dependencies and script for Splunk integration"
 pushd "$OTEL_PYTHON_DIR"
 
 cd "$SOURCES_DIR"
-sed -i 's/^opentelemetry-distro.*/splunk-opentelemetry[all]==1.12.0/g' requirements.txt
-sed -i 's/^opentelemetry-exporter-otlp-proto-http.*/opentelemetry-exporter-otlp-proto-http==1.19.0/g' requirements.txt
+sed -i 's/^opentelemetry-distro.*/splunk-opentelemetry[all]==1.13.0/g' requirements.txt
+sed -i 's/^opentelemetry-exporter-otlp-proto-http.*/opentelemetry-exporter-otlp-proto-http==1.20.0/g' requirements.txt
 # Even if this regex does nothing, leave these lines in to make later updates easier
-sed -i 's/0.40b0/0.40b0/g' requirements-nodeps.txt
-sed -i 's/0.40b0/0.40b0/g' requirements.txt
+sed -i 's/0.41b0/0.41b0/g' requirements-nodeps.txt
+sed -i 's/0.41b0/0.41b0/g' requirements.txt
 sed -i 's/^docker run --rm/docker run/g'  ../../build.sh
 sed -i 's/opentelemetry-instrument/splunk-py-trace/g'  otel-instrument
 echo "Modified python wrapper requirements:"
