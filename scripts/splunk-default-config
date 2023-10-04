@@ -11,10 +11,6 @@ then
   unset SPLUNK_ACCESS_TOKEN
 fi
 
-
-# no otel metrics
-export OTEL_METRICS_EXPORTER=none
-
 # otlp traces exporter
 export OTEL_TRACES_EXPORTER="${OTEL_TRACES_EXPORTER:-otlp}"
 # http/protobuf protocol
