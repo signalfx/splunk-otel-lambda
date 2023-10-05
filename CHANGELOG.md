@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## 0.7.0
+
+- Updated upstream otel-lambda to latest
+- Updated splunk-otel-python to 0.13.0
+- Fixed environment variables and collector config to support metrics export
+
 ## 0.6.6
 
 - Added SPLUNK_EXTENSION_WRAPPER_ENABLED and
