@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+- Updated node to splunk-otel 2.5.0
+- Updated upstream otel-lambda to latest
+
 ## 0.7.0
 
 - Updated upstream otel-lambda to latest
