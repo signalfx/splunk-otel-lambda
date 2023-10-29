@@ -4,6 +4,7 @@
 
 - Updated node to splunk-otel 2.5.0
 - Updated upstream otel-lambda to latest
+- Updated java dependencies, including otel-java sdk 1.30
 
 ## 0.7.0
 
