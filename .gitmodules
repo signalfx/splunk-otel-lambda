@@ -1,3 +1,4 @@
 [submodule "opentelemetry-lambda"]
 	path = opentelemetry-lambda
 	url = https://github.com/open-telemetry/opentelemetry-lambda.git
+	branch = main

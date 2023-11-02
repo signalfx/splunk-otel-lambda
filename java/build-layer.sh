@@ -14,11 +14,10 @@ mkdir -p $OTEL_JAVA_DIR/layer-wrapper/build/extensions
 # FIXME adding our stuff as an extension causes duplicate entry
 # build errors, but what libs are actually needed to copy through here?
 # What is provided by sdk runtime to the extension (e.g., logging)?
-rm ./build/libs/opentelemetry-sdk-logs-*.jar
-rm ./build/libs/opentelemetry-api-logs-*.jar
-rm ./build/libs/opentelemetry-api-events-*.jar
-rm ./build/libs/opentelemetry-exporter-otlp-*.jar
-rm ./build/libs/opentelemetry-sdk-extension-autoconfigure-spi-*.jar
+rm ./build/libs/kotlin-stdlib-*.jar
+rm ./build/libs/ok*.jar
+rm ./build/libs/opentelemetry-*.jar
+rm ./build/libs/annotations-*.jar
 cp ./build/libs/*.jar $OTEL_JAVA_DIR/layer-wrapper/build/extensions
 
 echo "Building OTEL wrapper"

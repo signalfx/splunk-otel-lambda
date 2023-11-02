@@ -1,6 +1,6 @@
 plugins {
     id "java"
-    id "com.diffplug.spotless" version "6.18.0" apply false
+    id "com.diffplug.spotless" version "6.22.0" apply false
 }
 
 group = 'com.splunk.public'
@@ -8,8 +8,8 @@ description = "Splunk distribution of OpenTelemetry Lambda"
 
 ext {
     versions = [
-            opentelemetry: '1.24.0',
-            opentelemetryalpha: '1.24.0-alpha'
+            opentelemetry: '1.30.0',
+            opentelemetryalpha: '1.30.0-alpha'
     ]
 }
 
@@ -23,7 +23,7 @@ java {
 }
 
 task copyDependencies(type: Copy) {
-    from configurations.default
+    from configurations.runtimeClasspath
     into 'build/libs'
 }
 build.finalizedBy(copyDependencies)
@@ -43,16 +43,16 @@ dependencies {
     implementation("io.opentelemetry:opentelemetry-exporter-otlp")
 
     // auto service (loaded by SDK)
-    annotationProcessor("com.google.auto.service:auto-service:1.0.1")
-    compileOnly("com.google.auto.service:auto-service:1.0.1")
+    annotationProcessor("com.google.auto.service:auto-service:1.1.1")
+    compileOnly("com.google.auto.service:auto-service:1.1.1")
 
     // AWS lambda
     // events
-    implementation("com.amazonaws:aws-lambda-java-events:3.11.1")
+    implementation("com.amazonaws:aws-lambda-java-events:3.11.3")
     // lambda logging
     implementation("com.amazonaws:aws-lambda-java-log4j2:1.5.1")
     implementation("org.apache.logging.log4j:log4j-slf4j18-impl:2.18.0")
-    implementation("org.apache.logging.log4j:log4j-core:2.20.0")
+    implementation("org.apache.logging.log4j:log4j-core:2.21.1")
 }
 
 // need to exclude "parent" dependencies to avoid clash upon copy / zip of the final layer

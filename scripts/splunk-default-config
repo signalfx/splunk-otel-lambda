@@ -1,10 +1,15 @@
 #!/bin/bash
-# specifically unset these so language-level instrumentations won't talk directly to ingest
-unset SPLUNK_REALM
-unset SPLUNK_ACCESS_TOKEN
+set -e
 
-# no otel metrics
-export OTEL_METRICS_EXPORTER=none
+# specifically unset splunk variables so language-level instrumentations won't talk
+# directly to ingest (unless collector is disabled)
+SLLCE="${SPLUNK_LAMBDA_LOCAL_COLLECTOR_ENABLED}"
+# case conversion only in bash 4+... :-(
+if [ "${SLLCE}" != "false" ] && [ "${SLLCE}" != "FALSE" ] && [ "${SLLCE}" != "0" ]
+then
+  unset SPLUNK_REALM
+  unset SPLUNK_ACCESS_TOKEN
+fi
 
 # otlp traces exporter
 export OTEL_TRACES_EXPORTER="${OTEL_TRACES_EXPORTER:-otlp}"
@@ -17,5 +22,36 @@ export OTEL_PROPAGATORS="${OTEL_PROPAGATORS:-tracecontext,baggage}"
 # no sampling
 export OTEL_TRACES_SAMPLER="${OTEL_TRACES_SAMPLER:-always_on}"
 
+# splunk token header if OLTP
+if [[ -n "$SPLUNK_ACCESS_TOKEN" && "$OTEL_TRACES_EXPORTER" = "otlp" ]]
+then
+    HEADER="X-SF-TOKEN=$SPLUNK_ACCESS_TOKEN,"
+    export OTEL_EXPORTER_OTLP_TRACES_HEADERS="${HEADER}${OTEL_EXPORTER_OTLP_TRACES_HEADERS}"
+fi
+
 # default flush timeout if not set
 export OTEL_INSTRUMENTATION_AWS_LAMBDA_FLUSH_TIMEOUT="${OTEL_INSTRUMENTATION_AWS_LAMBDA_FLUSH_TIMEOUT:-30000}"
+
+# splunk REALM support
+if [ -n "$SPLUNK_REALM" ]
+then
+
+    if [ -z "$SPLUNK_METRICS_ENDPOINT" ]
+    then
+        export SPLUNK_METRICS_ENDPOINT="https://ingest.${SPLUNK_REALM}.signalfx.com"
+    fi
+
+    if [[ "$OTEL_TRACES_EXPORTER" = *"otlp"* && -z "$OTEL_EXPORTER_OTLP_TRACES_ENDPOINT" ]]
+    then
+        export OTEL_EXPORTER_OTLP_TRACES_ENDPOINT="https://ingest.${SPLUNK_REALM}.signalfx.com/v2/trace/otlp"
+    elif [[ "$OTEL_TRACES_EXPORTER" = *"jaeger"* && -z "$OTEL_EXPORTER_JAEGER_ENDPOINT" ]]
+    then
+        export OTEL_EXPORTER_JAEGER_ENDPOINT="https://ingest.${SPLUNK_REALM}.signalfx.com/v2/trace"
+    fi
+fi
+
+# validation - realm must have token
+if [[ -n "$SPLUNK_REALM" && -z "$SPLUNK_ACCESS_TOKEN" ]]
+then
+    echo "[ERROR] SPLUNK_REALM is set, but SPLUNK_ACCESS_TOKEN is not set. To export data to Splunk Observability Cloud, define a Splunk Access Token"
+fi

@@ -8,10 +8,11 @@ echo "Modify dependencies and script for Splunk integration"
 pushd "$OTEL_PYTHON_DIR"
 
 cd "$SOURCES_DIR"
-sed -i 's/^opentelemetry-distro.*/splunk-opentelemetry[all]==1.9.1/g' requirements.txt
-sed -i 's/^opentelemetry-exporter-otlp-proto-http.*/opentelemetry-exporter-otlp-proto-http==1.15.0/g' requirements.txt
-sed -i 's/0.38b0/0.36b0/g' requirements-nodeps.txt
-sed -i 's/0.38b0/0.36b0/g' requirements.txt
+sed -i 's/^opentelemetry-distro.*/splunk-opentelemetry[all]==1.13.0/g' requirements.txt
+sed -i 's/^opentelemetry-exporter-otlp-proto-http.*/opentelemetry-exporter-otlp-proto-http==1.20.0/g' requirements.txt
+# Even if this regex does nothing, leave these lines in to make later updates easier
+sed -i 's/0.41b0/0.41b0/g' requirements-nodeps.txt
+sed -i 's/0.41b0/0.41b0/g' requirements.txt
 sed -i 's/^docker run --rm/docker run/g'  ../../build.sh
 sed -i 's/opentelemetry-instrument/splunk-py-trace/g'  otel-instrument
 echo "Modified python wrapper requirements:"
@@ -22,7 +23,7 @@ echo "Building OTel Lambda python"
 rm -rf build
 ./build.sh
 cd $DISTRO_DIR
-docker cp "$(docker ps --all | grep aws-otel-lambda-python-layer | cut -d' ' -f1 | head -1)":/out/layer.zip .
+docker cp "$(docker ps --all | grep aws-otel-lambda-python-layer | cut -d' ' -f1 | head -1)":/out/opentelemetry-python-layer.zip ./layer.zip
 unzip -qo layer.zip && rm layer.zip
 mv otel-instrument otel-instrument-upstream
 
