@@ -1,7 +1,7 @@
 # Changelog
 
 ## [Unreleased]
-
+- Update upstream otel-lambda to latest with java17 support
 
 ## 0.7.1
 
