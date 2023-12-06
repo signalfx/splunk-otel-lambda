@@ -1,6 +1,11 @@
 # Changelog
 
 ## [Unreleased]
+- Update upstream otel-lambda to latest
+- Update otel-java dependencies to 1.32.0
+- Update splunk-otel-python to 1.16.0
+- Update splunk-otel-js to 2.5.1
+- Update miscellaneous other java depenencies
 
 ## 0.7.2
 - Update upstream otel-lambda to latest with java17 (and 21) support
