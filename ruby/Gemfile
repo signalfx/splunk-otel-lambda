@@ -1,6 +1,0 @@
-source 'https://rubygems.org'
-
-gem 'splunk-otel', '~> 1.0'
-gem 'opentelemetry-instrumentation-all', '~> 0.27'
-gem 'opentelemetry-instrumentation-aws_sdk', '~> 0.3'
-gem 'opentelemetry-semantic_conventions', '~> 1.8'

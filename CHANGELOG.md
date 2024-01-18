@@ -2,7 +2,10 @@
 
 ## [Unreleased]
 
+- Remove ruby support
+
 ## 0.7.4
+
 - Update splunk-otel-js to 2.6.0
 
 ## 0.7.3
@@ -14,6 +17,7 @@
 - Update miscellaneous other java depenencies
 
 ## 0.7.2
+
 - Update upstream otel-lambda to latest with java17 (and 21) support
 
 ## 0.7.1
