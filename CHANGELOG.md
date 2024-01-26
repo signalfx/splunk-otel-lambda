@@ -2,7 +2,13 @@
 
 ## [Unreleased]
 
-- Remove ruby support
+## 0.8.0
+
+- Remove ruby support.  Please use manual or upstream ruby instrumentation.
+- Update upstream otel-lambda to latest
+- Update otel-java dependencies to 2.0.0
+- Update splunk-otel-python to 1.17.0
+- Update splunk-otel-js to 2.6.1
 
 ## 0.7.4
 
