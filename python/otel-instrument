@@ -1,7 +1,6 @@
 #!/bin/bash
 
 source /opt/splunk-default-config
-export OTEL_METRICS_ENABLED=false
 
 # temporarily, until Python supports spec exporter/protocol values
 if [[ $OTEL_TRACES_EXPORTER = *"otlp"* ]]
