@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+## 0.9.1
+- Re-enable python metrics exporting
+
 ## 0.9.0
 - Update upstream otel-lambda to latest
 - Update otel-java dependencies to 2.4
