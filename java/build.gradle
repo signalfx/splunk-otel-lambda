@@ -48,7 +48,7 @@ dependencies {
 
     // AWS lambda
     // events
-    implementation("com.amazonaws:aws-lambda-java-events:3.11.5")
+    implementation("com.amazonaws:aws-lambda-java-events:3.11.6")
     // lambda logging
     implementation("com.amazonaws:aws-lambda-java-log4j2:1.6.0")
     implementation("org.apache.logging.log4j:log4j-slf4j18-impl:2.18.0")
