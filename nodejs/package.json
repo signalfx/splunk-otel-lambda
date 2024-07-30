@@ -28,7 +28,7 @@
     "typescript": "5.5"
   },
   "dependencies": {
-    "@opentelemetry/instrumentation-aws-lambda": "0.42.0",
+    "@opentelemetry/instrumentation-aws-lambda": "0.43.0",
     "@opentelemetry/resource-detector-aws": "1.5.1",
     "@opentelemetry/sdk-trace-node": "1.25.1",
     "@splunk/otel": "2.9.0",
