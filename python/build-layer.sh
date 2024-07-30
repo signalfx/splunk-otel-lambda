@@ -17,11 +17,11 @@ sed -i 's/^docker run --rm/docker run/g'  ../../build.sh
 sed -i 's/opentelemetry-instrument/splunk-py-trace/g'  otel-instrument
 # FIXME this recently broke and why aren't these a vendored part of pkg_resources anymore? perhaps we should remove the dependency on pkg_resources?
 echo "packaging" >> requirements.txt
-echo "jaraco" >> requirements.txt
-echo "backports" >> requirements.txt
-echo "importlb_resources" >> requirements.txt
-echo "more_itertools" >> requirements.txt
-echo "platformdirs" >> requirements.txt
+echo "jaraco.text" >> requirements.txt
+#echo "backports" >> requirements.txt
+#echo "importlib_resources" >> requirements.txt
+#echo "more_itertools" >> requirements.txt
+#echo "platformdirs" >> requirements.txt
 echo "Modified python wrapper requirements:"
 cat requirements.txt
 cd ../..
