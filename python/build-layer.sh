@@ -21,7 +21,7 @@ echo "jaraco.text" >> requirements.txt
 #echo "backports" >> requirements.txt
 #echo "importlib_resources" >> requirements.txt
 #echo "more_itertools" >> requirements.txt
-#echo "platformdirs" >> requirements.txt
+echo "platformdirs" >> requirements.txt
 echo "Modified python wrapper requirements:"
 cat requirements.txt
 cd ../..
