@@ -25,7 +25,7 @@
     "node": ">=14"
   },
   "devDependencies": {
-    "typescript": "5.4"
+    "typescript": "5.5"
   },
   "dependencies": {
     "@opentelemetry/instrumentation-aws-lambda": "0.42.0",
