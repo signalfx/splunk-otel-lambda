@@ -26,8 +26,8 @@ pushd $OTEL_JAVA_DIR
 
 echo "Preparing Splunk layer"
 cd $DISTRO_DIR
-unzip -qo opentelemetry-java-wrapper.zip
-rm opentelemetry-java-wrapper.zip
+unzip -qo opentelemetry-javawrapper-layer.zip
+rm opentelemetry-javawrapper-layer.zip
 sed -i '2isource /opt/splunk-default-config' otel-handler
 sed -i '2isource /opt/splunk-default-config' otel-stream-handler
 sed -i '2isource /opt/splunk-default-config' otel-proxy-handler
