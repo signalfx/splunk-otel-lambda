@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## 0.9.6
+- Upstream opentelemetry has deprecated OPENTELEMETRY_COLLECTOR_CONFIG_FILE and
+  renamed it to OPENTELEMETRY_COLLECTOR_CONFIG_URI.  Please adjust
+  your environments accordingly.
+
 ## 0.9.1
 - Re-enable python metrics exporting
 
