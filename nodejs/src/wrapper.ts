@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { diag, DiagConsoleLogger, isSpanContextValid, TraceFlags } from "@opentelemetry/api";
+import { diag, DiagConsoleLogger, isSpanContextValid, propagation, context as otelContext, TraceFlags } from "@opentelemetry/api";
 import { NodeTracerConfig } from '@opentelemetry/sdk-trace-node';
 import { getEnv } from '@opentelemetry/core';
 import { detectResources, envDetector, processDetector } from '@opentelemetry/resources';
@@ -100,9 +100,23 @@ const responseHook: ResponseHook = (span, data) => {
     appendHeader(data.res.headers, 'Server-Timing', `traceparent;desc="00-${traceId}-${spanId}-${flags}"`);
   };
 
+const awsContextPropDisabled = typeof process.env['OTEL_LAMBDA_DISABLE_AWS_CONTEXT_PROPAGATION'] === 'string'
+  && process.env['OTEL_LAMBDA_DISABLE_AWS_CONTEXT_PROPAGATION'].toLowerCase() === 'true';
+
+const extraLambdaConfig = awsContextPropDisabled ?
+  {
+       // enable trace chaining; FIXME should fix this in upstream?
+       eventContextExtractor: (event: any, context: any) => {
+        const eventContext = propagation.extract(otelContext.active(), context.clientContext?.Custom);
+        return eventContext;
+      },
+  } :
+  { };
+
 const instrumentations = [
   new AwsLambdaInstrumentation({
-    responseHook
+    responseHook,
+    ...extraLambdaConfig,
   }),
   ...getInstrumentations(),
 ];
