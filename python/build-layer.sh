@@ -25,6 +25,13 @@ echo "Modified python wrapper requirements:"
 cat requirements.txt
 cd ../..
 
+# FIXME upstream python version specification fix?
+sed -i '1iENV PIP_PYTHON_VERSION=3.8' otel/Dockerfile
+echo "Modified Dockerfile:"
+cat Dockerfile
+echo "----"
+
+
 echo "Building OTel Lambda python"
 rm -rf build
 ./build.sh
