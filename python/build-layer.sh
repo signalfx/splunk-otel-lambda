@@ -26,7 +26,7 @@ cat requirements.txt
 cd ../..
 
 # FIXME upstream python version specification fix?
-sed -i '6iENV PIP_PYTHON_VERSION=3.8' otel/Dockerfile
+sed -i 's/python3.*/python3.8/' otel/Dockerfile
 echo "Modified Dockerfile:"
 cat otel/Dockerfile
 echo "----"
