@@ -11,9 +11,9 @@ cd "$SOURCES_DIR"
 sed -i 's/^opentelemetry-distro.*/splunk-opentelemetry[all]==1.21.0/g' requirements.txt
 sed -i 's/^opentelemetry-exporter-otlp-proto-http.*/opentelemetry-exporter-otlp-proto-http==1.27.0/g' requirements.txt
 # Even if these regexes do nothing, leave these lines in to make later updates easier
-sed -i 's/0.48b0/0.48b0/g' nodeps-requirements.txt
-sed -i 's/0.48b0/0.48b0/g' requirements.txt
-sed -i 's/1.27.0/1.27.0/g' requirements.txt
+sed -i 's/0.49b1/0.48b0/g' nodeps-requirements.txt
+sed -i 's/0.49b1/0.48b0/g' requirements.txt
+sed -i 's/1.28.1/1.27.0/g' requirements.txt
 sed -i 's/^docker run --rm/docker run/g'  ../../build.sh
 sed -i 's/opentelemetry-instrument/splunk-py-trace/g'  otel-instrument
 # FIXME this recently broke and why aren't these a vendored part of pkg_resources anymore? perhaps we should remove the dependency on pkg_resources?
