@@ -30,8 +30,8 @@
   "dependencies": {
     "@opentelemetry/instrumentation-aws-lambda": "0.50.1",
     "@opentelemetry/resource-detector-aws": "1.10.0",
-    "@opentelemetry/sdk-trace-node": "1.28.0",
-    "@splunk/otel": "2.15.0",
+    "@opentelemetry/sdk-trace-node": "1.30.0",
+    "@splunk/otel": "2.16.0",
     "@types/signalfx": "7.4.5"
   }
 }
