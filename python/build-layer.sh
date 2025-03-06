@@ -15,7 +15,7 @@ sed -i 's/0.51b0/0.51b0/g' nodeps-requirements.txt
 sed -i 's/0.51b0/0.51b0/g' requirements.txt
 sed -i 's/1.30.0/1.30.0/g' requirements.txt
 sed -i 's/^docker run --rm/docker run/g'  ../../build.sh
-sed -i 's/opentelemetry-instrument/splunk-py-trace/g'  otel-instrument
+# sed -i 's/opentelemetry-instrument/splunk-py-trace/g'  otel-instrument
 # FIXME this recently broke and why aren't these a vendored part of pkg_resources anymore? perhaps we should remove the dependency on pkg_resources?
 echo "packaging" >> requirements.txt
 echo "jaraco.text" >> requirements.txt
