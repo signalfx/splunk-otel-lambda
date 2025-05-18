@@ -8,11 +8,11 @@ echo "Modify dependencies and script for Splunk integration"
 pushd "$OTEL_PYTHON_DIR"
 
 cd "$SOURCES_DIR"
-sed -i 's/^opentelemetry-distro.*/splunk-opentelemetry[all]==2.2.0/g' requirements.txt
+sed -i 's/^opentelemetry-distro.*/splunk-opentelemetry[all]==2.3.0/g' requirements.txt
 # Even if these regexes do nothing, leave these lines in to make later updates easier
-sed -i 's/0.53b0/0.52b1/g' nodeps-requirements.txt
-sed -i 's/0.53b0/0.52b1/g' requirements.txt
-sed -i 's/1.32.0/1.31.1/g' requirements.txt
+sed -i 's/0.54b0/0.53b1/g' nodeps-requirements.txt
+sed -i 's/0.54b0/0.53b1/g' requirements.txt
+sed -i 's/1.33.0/1.32.1/g' requirements.txt
 sed -i 's/^docker run --rm/docker run/g'  ../../build.sh
 # sed -i 's/opentelemetry-instrument/splunk-py-trace/g'  otel-instrument
 # FIXME this recently broke and why aren't these a vendored part of pkg_resources anymore? perhaps we should remove the dependency on pkg_resources?
