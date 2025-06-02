@@ -1,17 +1,6 @@
 #!/bin/bash
 
+# FIXME remove this file and just adjust the upstream one, like the java code
 source /opt/splunk-default-config
-
-# temporarily, until Python supports spec exporter/protocol values
-if [[ $OTEL_TRACES_EXPORTER = *"otlp"* ]]
-then
-    if [ "$OTEL_EXPORTER_OTLP_TRACES_PROTOCOL" = "grpc" ]
-    then
-        export OTEL_TRACES_EXPORTER="otlp_proto_grpc"
-    elif [ "$OTEL_EXPORTER_OTLP_TRACES_PROTOCOL" = "http/protobuf" ]
-    then
-        export OTEL_TRACES_EXPORTER="otlp_proto_http"
-    fi
-fi
 
 /opt/otel-instrument-upstream "$@"
