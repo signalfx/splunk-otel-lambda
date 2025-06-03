@@ -11,8 +11,7 @@ npm install --unsafe-perm
 # optimise the size
 echo "Performing automated size optimisations"
 npm prune --json --production
-[ ! -f node-prune ] && curl -sf https://gobinaries.com/tj/node-prune | PREFIX=. sh
-./node-prune
+npm exec node-prune
 
 echo "Preparing Splunk layer"
 cp nodejs-otel-handler ./build/
