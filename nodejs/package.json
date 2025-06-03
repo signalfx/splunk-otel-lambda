@@ -25,6 +25,7 @@
     "node": ">=14"
   },
   "devDependencies": {
+    "node-prune": "^1.0.2",
     "typescript": "5.8"
   },
   "dependencies": {
