@@ -15,13 +15,6 @@ sed -i 's/0.54b1/0.53b1/g' requirements.txt
 sed -i 's/1.33.1/1.32.1/g' requirements.txt
 sed -i 's/^docker run --rm/docker run/g'  ../../build.sh
 # sed -i 's/opentelemetry-instrument/splunk-py-trace/g'  otel-instrument
-# FIXME this recently broke and why aren't these a vendored part of pkg_resources anymore? perhaps we should remove the dependency on pkg_resources?
-echo "packaging" >> requirements.txt
-echo "jaraco.text" >> requirements.txt
-echo "importlib-resources" >> requirements.txt
-echo "platformdirs" >> requirements.txt
-echo "Modified python wrapper requirements:"
-cat requirements.txt
 cd ../..
 
 # FIXME no good way to specify python version requirement to pip; use 3.8 runtime/setuptools image
