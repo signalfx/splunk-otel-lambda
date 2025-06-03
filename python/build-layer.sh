@@ -14,7 +14,8 @@ sed -i 's/0.54b1/0.53b1/g' nodeps-requirements.txt
 sed -i 's/0.54b1/0.53b1/g' requirements.txt
 sed -i 's/1.33.1/1.32.1/g' requirements.txt
 sed -i 's/^docker run --rm/docker run/g'  ../../build.sh
-# sed -i 's/opentelemetry-instrument/splunk-py-trace/g'  otel-instrument
+sed -i '2isource /opt/splunk-default-config' otel-handler otel-instrument
+
 cd ../..
 
 # FIXME no good way to specify python version requirement to pip; use 3.8 runtime/setuptools image
@@ -31,13 +32,11 @@ rm -rf build
 cd $DISTRO_DIR
 docker cp "$(docker ps --all | grep aws-otel-lambda-python-layer | cut -d' ' -f1 | head -1)":/out/opentelemetry-python-layer.zip ./layer.zip
 unzip -qo layer.zip && rm layer.zip
-mv otel-instrument otel-instrument-upstream
 
 popd
 
 echo "Preparing Splunk layer"
 # copy Splunk scripts (delegating to OTEL ones)
-cp otel-instrument $OTEL_PYTHON_DIR/$DISTRO_DIR/
 cp ../scripts/* $OTEL_PYTHON_DIR/$DISTRO_DIR/
 cp -r ./src/* $OTEL_PYTHON_DIR/$DISTRO_DIR/python/
 cd $OTEL_PYTHON_DIR/$DISTRO_DIR

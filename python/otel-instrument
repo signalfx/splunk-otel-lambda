@@ -1,6 +1,0 @@
-#!/bin/bash
-
-# FIXME remove this file and just adjust the upstream one, like the java code
-source /opt/splunk-default-config
-
-/opt/otel-instrument-upstream "$@"
