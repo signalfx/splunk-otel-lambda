@@ -16,11 +16,6 @@ sed -i 's/1.33.1/1.32.1/g' requirements.txt
 sed -i 's/^docker run --rm/docker run/g'  ../../build.sh
 sed -i '2isource /opt/splunk-default-config' otel-instrument
 
-# FIXME this was recently added as a wrapper around python's otel-instrument but
-# the name conflicts with the java shell wrapper.  For now just drop it, but if
-# the upstream python/otel-handler grows additional features this may need more surgery and/or doc changes
-rm otel-handler
-
 cd ../..
 
 # FIXME no good way to specify python version requirement to pip; use 3.8 runtime/setuptools image
@@ -56,6 +51,10 @@ rm -rf python/six* python/*setuptools
 # cached bytecode
 find . -name __pycache__ -type d -prune -exec rm -rf {} \;
 
+# FIXME this was recently added as a wrapper around python's otel-instrument but
+# the name conflicts with the java shell wrapper.  For now just drop it, but if
+# the upstream python/otel-handler grows additional features this may need more surgery and/or doc changes
+rm otel-handler
 
 # ZIP IT
 echo "Creating layer ZIP"
