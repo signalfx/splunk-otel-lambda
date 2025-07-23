@@ -8,19 +8,18 @@ echo "Modify dependencies and script for Splunk integration"
 pushd "$OTEL_PYTHON_DIR"
 
 cd "$SOURCES_DIR"
-sed -i 's/^opentelemetry-distro.*/splunk-opentelemetry[all]==2.4.0/g' requirements.txt
+sed -i 's/^opentelemetry-distro.*/splunk-opentelemetry[all]==2.5.0/g' requirements.txt
 # Even if these regexes do nothing, leave these lines in to make later updates easier
-sed -i 's/0.55b1/0.54b1/g' nodeps-requirements.txt
-sed -i 's/0.55b1/0.54b1/g' requirements.txt
-sed -i 's/1.34.1/1.33.1/g' requirements.txt
+sed -i 's/0.56b0/0.56b0/g' nodeps-requirements.txt
+sed -i 's/0.56b0/0.56b0/g' requirements.txt
+sed -i 's/1.35.0/1.35.0/g' requirements.txt
 sed -i 's/^docker run --rm/docker run/g'  ../../build.sh
 sed -i '2isource /opt/splunk-default-config' otel-instrument
 
 cd ../..
 
-# FIXME no good way to specify python version requirement to pip; use 3.8 runtime/setuptools image
-# This block can be removed once python 3.8 reaches "no updates" aws deprecation status in March 2025
-sed -i 's/runtime=python3.*/runtime=python3.8/' otel/Dockerfile
+# FIXME no good way to specify python version requirement to pip; use 3.9 runtime/setuptools image
+sed -i 's/runtime=python3.*/runtime=python3.9/' otel/Dockerfile
 echo "Modified Dockerfile:"
 cat otel/Dockerfile
 echo "----"
