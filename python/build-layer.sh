@@ -18,9 +18,8 @@ sed -i '2isource /opt/splunk-default-config' otel-instrument
 
 cd ../..
 
-# FIXME no good way to specify python version requirement to pip; use 3.8 runtime/setuptools image
-# This block can be removed once python 3.8 reaches "no updates" aws deprecation status in March 2025
-sed -i 's/runtime=python3.*/runtime=python3.8/' otel/Dockerfile
+# FIXME no good way to specify python version requirement to pip; use 3.9 runtime/setuptools image
+sed -i 's/runtime=python3.*/runtime=python3.9/' otel/Dockerfile
 echo "Modified Dockerfile:"
 cat otel/Dockerfile
 echo "----"
