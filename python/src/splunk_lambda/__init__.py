@@ -14,7 +14,6 @@
 
 from os import environ
 import logging
-import pkg_resources
 
 logger = logging.getLogger(__file__)
 
@@ -22,8 +21,9 @@ logger = logging.getLogger(__file__)
 def splunk_lambda_sls_zip_handler():
     if environ.get("SPLUNK_LAMBDA_SLS_ZIP", "false") == 'true':
         try:
-            logger.info("Trying to import unzip_requirements")
+            logger.info("Trying to import dependencies")
             import unzip_requirements
+            import pkg_resources
             pkg_resources.working_set.add_entry("/tmp/sls-py-req")
             logger.info("unzip_requirements imported")
         except ImportError:
