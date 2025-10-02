@@ -16,7 +16,7 @@
 
 import { diag, DiagConsoleLogger, isSpanContextValid, propagation, context as otelContext, TraceFlags } from "@opentelemetry/api";
 import { NodeTracerConfig } from '@opentelemetry/sdk-trace-node';
-import { getEnv } from '@opentelemetry/core';
+import { diagLogLevelFromString, getStringFromEnv } from '@opentelemetry/core';
 import { detectResources, envDetector, processDetector } from '@opentelemetry/resources';
 
 import { awsLambdaDetector } from '@opentelemetry/resource-detector-aws';
@@ -29,8 +29,8 @@ import { getInstrumentations } from '@splunk/otel/lib/instrumentations';
 
 
 // configure lambda logging
-const logLevel = getEnv().OTEL_LOG_LEVEL
-diag.setLogger(new DiagConsoleLogger(), logLevel)
+const logLevel = getStringFromEnv('OTEL_LOG_LEVEL');
+diag.setLogger(new DiagConsoleLogger(), diagLogLevelFromString(logLevel));
 
 // configure flush timeout
 let forceFlushTimeoutMillisEnv = parseInt(process.env.OTEL_INSTRUMENTATION_AWS_LAMBDA_FLUSH_TIMEOUT || "")
@@ -122,7 +122,7 @@ const instrumentations = [
 ];
 
 async function initializeProvider() {
-  const resource = await detectResources({
+  const resource = detectResources({
     detectors: [awsLambdaDetector, envDetector, processDetector],
   });
   const tracerConfig: NodeTracerConfig = {
