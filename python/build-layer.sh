@@ -8,11 +8,11 @@ echo "Modify dependencies and script for Splunk integration"
 pushd "$OTEL_PYTHON_DIR"
 
 cd "$SOURCES_DIR"
-sed -i 's/^opentelemetry-distro.*/splunk-opentelemetry[all]==2.7.0/g' requirements.txt
+sed -i 's/^opentelemetry-distro.*/splunk-opentelemetry[all]==2.8.0/g' requirements.txt
 # Even if these regexes do nothing, leave these lines in to make later updates easier
-sed -i 's/0.58b0/0.57b0/g' nodeps-requirements.txt
-sed -i 's/0.58b0/0.57b0/g' requirements.txt
-sed -i 's/1.37.0/1.36.0/g' requirements.txt
+sed -i 's/0.59b0/0.59b0/g' nodeps-requirements.txt
+sed -i 's/0.59b0/0.59b0/g' requirements.txt
+sed -i 's/1.38.0/1.38.0/g' requirements.txt
 sed -i 's/^docker run --rm/docker run/g'  ../../build.sh
 sed -i '2isource /opt/splunk-default-config' otel-instrument
 
