@@ -3,6 +3,20 @@ source /opt/splunk-default-config
 
 export NODE_OPTIONS="${NODE_OPTIONS} --require /opt/wrapper.js"
 
+node_version="$(node -p "process.versions.node" 2>/dev/null || echo "")"
+node_major="${node_version%%.*}"
+node_minor="${node_version#*.}"
+node_minor="${node_minor%%.*}"
+
+if [[ "$node_major" =~ ^[0-9]+$ ]] && [[ "$node_minor" =~ ^[0-9]+$ ]]; then
+  if [ "$node_major" -gt 20 ] || { [ "$node_major" -eq 20 ] && [ "$node_minor" -ge 6 ]; } || { [ "$node_major" -eq 18 ] && [ "$node_minor" -ge 19 ]; }; then
+    import_in_the_middle_loader="/opt/nodejs/node_modules/import-in-the-middle/hook.mjs"
+    if [ -f "$import_in_the_middle_loader" ] && [[ "${NODE_OPTIONS}" != *"${import_in_the_middle_loader}"* ]]; then
+      export NODE_OPTIONS="${NODE_OPTIONS} --loader ${import_in_the_middle_loader}"
+    fi
+  fi
+fi
+
 if [[ $OTEL_RESOURCE_ATTRIBUTES != *"service.name="* ]]; then
   export OTEL_RESOURCE_ATTRIBUTES="service.name=${AWS_LAMBDA_FUNCTION_NAME},${OTEL_RESOURCE_ATTRIBUTES}"
 fi
