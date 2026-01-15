@@ -1,4 +1,4 @@
-import { register } from 'module';
+import * as module from 'module';
 import * as path from 'path';
 import * as fs from 'fs';
 
@@ -67,11 +67,31 @@ function _isHandlerAnESModule() {
   }
 }
 
+function _isSupportedNodeForEsmLoaderHook() {
+  try {
+    const nodeVersion = process.versions && process.versions.node;
+    if (!nodeVersion) {
+      return false;
+    }
+    const [majorStr, minorStr] = nodeVersion.split('.', 3);
+    const major = Number.parseInt(majorStr, 10);
+    const minor = Number.parseInt(minorStr, 10);
+    if (!Number.isFinite(major) || !Number.isFinite(minor)) {
+      return false;
+    }
+    return major > 20 || (major === 20 && minor >= 6);
+  } catch {
+    return false;
+  }
+}
+
 let registered = false;
 
 export function registerLoader() {
   if (!registered) {
-    register('import-in-the-middle/hook.mjs', import.meta.url);
+    if (_isSupportedNodeForEsmLoaderHook() && typeof module.register === 'function') {
+      module.register('import-in-the-middle/hook.mjs', import.meta.url);
+    }
     registered = true;
   }
 }
