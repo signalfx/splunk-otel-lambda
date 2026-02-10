@@ -26,6 +26,7 @@ The following languages are currently supported:
 
 - Java
 - Python
+-- Test
 - Node.js
 
 Layer ARNs [are published here](https://github.com/signalfx/lambda-layer-versions/).
