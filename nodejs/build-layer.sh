@@ -11,7 +11,9 @@ npm install --unsafe-perm
 # optimise the size
 echo "Performing automated size optimisations"
 npm prune --json --production
-npm exec node-prune
+# FIXME prune is removing necessary files (e.g., doc/directives.js) from the yaml parser and
+# various attempts to --except it have not worked, so just not pruning for now
+#npm exec node-prune
 
 echo "Preparing Splunk layer"
 cp nodejs-otel-handler ./build/
