@@ -8,12 +8,9 @@ echo "Modify dependencies and script for Splunk integration"
 pushd "$OTEL_PYTHON_DIR"
 
 cd "$SOURCES_DIR"
-<<<<<<< Updated upstream
-sed -i 's/^opentelemetry-distro.*/splunk-opentelemetry[all]==2.9.0/g' requirements.txt
-=======
 sed -i 's/^opentelemetry-distro.*/splunk-opentelemetry[all]==2.8.0/g' requirements.txt
+# Add the logging dependency below the opentelemetry-instrumentation dependency
 sed -i '/^opentelemetry-instrumentation==/a opentelemetry-instrumentation-logging==0.60b1' requirements.txt
->>>>>>> Stashed changes
 # Even if these regexes do nothing, leave these lines in to make later updates easier
 sed -i 's/0.60b1/0.60b1/g' nodeps-requirements.txt
 sed -i 's/0.60b1/0.60b1/g' requirements.txt
