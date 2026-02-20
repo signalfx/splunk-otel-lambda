@@ -1,7 +1,17 @@
 #!/bin/bash
 source /opt/splunk-default-config
 
-export NODE_OPTIONS="${NODE_OPTIONS} --require /opt/wrapper.js"
+node_version="$(node -p "process.versions.node" 2>/dev/null || echo "")"
+node_major="${node_version%%.*}"
+node_minor="${node_version#*.}"
+node_minor="${node_minor%%.*}"
+
+if [[ "$node_major" =~ ^[0-9]+$ ]] && [[ "$node_minor" =~ ^[0-9]+$ ]] && { [ "$node_major" -gt 20 ] || { [ "$node_major" -eq 20 ] && [ "$node_minor" -ge 6 ]; }; }
+then
+  export NODE_OPTIONS="${NODE_OPTIONS} --import /opt/loader.mjs --require /opt/wrapper.js"
+else
+  export NODE_OPTIONS="${NODE_OPTIONS} --require /opt/wrapper.js"
+fi
 
 if [[ $OTEL_RESOURCE_ATTRIBUTES != *"service.name="* ]]; then
   export OTEL_RESOURCE_ATTRIBUTES="service.name=${AWS_LAMBDA_FUNCTION_NAME},${OTEL_RESOURCE_ATTRIBUTES}"

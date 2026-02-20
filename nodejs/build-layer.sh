@@ -17,6 +17,7 @@ npm prune --json --production
 
 echo "Preparing Splunk layer"
 cp nodejs-otel-handler ./build/
+cp loader.mjs ./build/
 cp ../scripts/* ./build/
 mkdir -p build/nodejs
 mv node_modules ./build/nodejs/
@@ -29,7 +30,11 @@ find . \( -name "*.map" -o -name "*.ts" \) -type f -delete
 # remove PACKAGES (CAREFUL!)
 rm -rf ./nodejs/node_modules/graphql ./nodejs/node_modules/bson
 # remove various folders (modules, protobuf definitions)
-find . \( -name "protos" -o -name "esm" \) -type d -prune -exec rm -rf {} \;
+find . -name "protos" -type d -prune -exec rm -rf {} \;
+find . -name "esm" -type d \
+  -not -path "./nodejs/node_modules/import-in-the-middle/*" \
+  -not -path "./nodejs/node_modules/require-in-the-middle/*" \
+  -prune -exec rm -rf {} \;
 # optimize PROTOBUF
 find . -path "./nodejs/node_modules/protobufjs/*" \( -name "bin" -o -name "cli" -o -name "dist" -o -name "scripts" \) -type d -prune -exec rm -rf {} \;
 # optimize SPLUNK
