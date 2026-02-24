@@ -131,13 +131,11 @@ async function initializeProvider() {
     resource,
     forceFlushTimeoutMillis,
   };
+  propagation.setGlobalPropagator(getPropagator());
   start({
     tracing: {
       tracerConfig: tracerConfig,
       instrumentations: instrumentations,
-      sdkRegistrationConfig: {
-        propagator: getPropagator(),
-      },
     },
   })
 }
