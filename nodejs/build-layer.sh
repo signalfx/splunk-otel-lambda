@@ -15,7 +15,7 @@ npm exec node-prune
 
 echo "Preparing Splunk layer"
 cp nodejs-otel-handler ./build/
-cp loader.mjs ./build/
+cp ../opentelemetry-lambda/nodejs/packages/layer/src/loader.mjs ./build/
 cp ../scripts/* ./build/
 mkdir -p build/nodejs
 mv node_modules ./build/nodejs/
