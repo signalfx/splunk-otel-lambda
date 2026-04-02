@@ -23,7 +23,7 @@ import io.opentelemetry.context.propagation.TextMapSetter;
 import java.util.HashMap;
 
 public class TracingRequestApiGatewayWrapper
-    extends io.opentelemetry.instrumentation.awslambdaevents.v2_2.TracingRequestApiGatewayWrapper {
+    extends io.opentelemetry.instrumentation.awslambdaevents.v3_11.TracingRequestApiGatewayWrapper {
 
   @Override
   protected APIGatewayProxyResponseEvent doHandleRequest(

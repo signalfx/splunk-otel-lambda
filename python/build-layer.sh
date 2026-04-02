@@ -12,9 +12,9 @@ sed -i 's/^opentelemetry-distro.*/splunk-opentelemetry[all]==2.9.0/g' requiremen
 # Add the logging dependency below the opentelemetry-instrumentation dependency
 sed -i '/^opentelemetry-instrumentation==/a opentelemetry-instrumentation-logging==0.60b1' requirements.txt
 # Even if these regexes do nothing, leave these lines in to make later updates easier
-sed -i 's/0.60b1/0.60b1/g' nodeps-requirements.txt
-sed -i 's/0.60b1/0.60b1/g' requirements.txt
-sed -i 's/1.39.1/1.39.1/g' requirements.txt
+sed -i 's/0.61b0/0.60b1/g' nodeps-requirements.txt
+sed -i 's/0.61b0/0.60b1/g' requirements.txt
+sed -i 's/1.40.0/1.39.1/g' requirements.txt
 sed -i 's/^docker run --rm/docker run/g'  ../../build.sh
 sed -i '2isource /opt/splunk-default-config' otel-instrument
 
