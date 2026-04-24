@@ -29,10 +29,10 @@
     "typescript": "6.0"
   },
   "dependencies": {
-    "@opentelemetry/instrumentation-aws-lambda": "0.63.0",
+    "@opentelemetry/instrumentation-aws-lambda": "0.67.0",
     "@opentelemetry/propagator-aws-xray-lambda": "0.56.0",
     "@opentelemetry/resource-detector-aws": "2.15.0",
     "@opentelemetry/sdk-trace-node": "2.7.0",
-    "@splunk/otel": "4.4.0"
+    "@splunk/otel": "4.6.0"
   }
 }
