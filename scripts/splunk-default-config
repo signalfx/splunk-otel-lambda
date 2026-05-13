@@ -38,15 +38,15 @@ then
 
     if [ -z "$SPLUNK_METRICS_ENDPOINT" ]
     then
-        export SPLUNK_METRICS_ENDPOINT="https://ingest.${SPLUNK_REALM}.signalfx.com"
+        export SPLUNK_METRICS_ENDPOINT="https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com"
     fi
 
     if [[ "$OTEL_TRACES_EXPORTER" = *"otlp"* && -z "$OTEL_EXPORTER_OTLP_TRACES_ENDPOINT" ]]
     then
-        export OTEL_EXPORTER_OTLP_TRACES_ENDPOINT="https://ingest.${SPLUNK_REALM}.signalfx.com/v2/trace/otlp"
+        export OTEL_EXPORTER_OTLP_TRACES_ENDPOINT="https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com/v2/trace/otlp"
     elif [[ "$OTEL_TRACES_EXPORTER" = *"jaeger"* && -z "$OTEL_EXPORTER_JAEGER_ENDPOINT" ]]
     then
-        export OTEL_EXPORTER_JAEGER_ENDPOINT="https://ingest.${SPLUNK_REALM}.signalfx.com/v2/trace"
+        export OTEL_EXPORTER_JAEGER_ENDPOINT="https://ingest.${SPLUNK_REALM}.observability.splunkcloud.com/v2/trace"
     fi
 fi
 
