@@ -159,15 +159,14 @@ function getPropagator(options: TracingOptions): TextMapPropagator {
 }
 
 function getPropagatorsFromEnv(): string[] {
-  if (
-    process.env.OTEL_PROPAGATORS == null ||
-    process.env.OTEL_PROPAGATORS.trim() === ''
-  ) {
+  const propagators = process.env.OTEL_PROPAGATORS || '';
+
+  if (propagators.trim() === '') {
     return [];
   }
   return Array.from(
     new Set(
-      process.env.OTEL_PROPAGATORS.split(',').map(value =>
+      propagators.split(',').map(value =>
         value.toLowerCase().trim(),
       ),
     ),
