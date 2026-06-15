@@ -57,24 +57,13 @@ aws secretsmanager create-secret \
   --region "<aws-region>"
 ```
 
-You can also store the token in a JSON secret:
-
-```shell
-aws secretsmanager create-secret \
-  --name splunk/observability/otel \
-  --secret-string '{"access_token":"<splunk-access-token>"}' \
-  --region "<aws-region>"
-```
-
 Use a secret name or ARN that matches your organization's naming and access
 control standards. Do not use `X-SF-TOKEN` as the Lambda environment variable
 name; `X-SF-TOKEN` is the HTTP header sent to Splunk Observability Cloud.
 
 ## Create a Collector configuration
 
-Create a Collector configuration file such as `collector-config.yaml`. The
-example below mirrors the default local Collector pipelines and changes the
-Splunk exporter header to use AWS Secrets Manager:
+Create a file named `collector-config.yaml` with the following content:
 
 ```yaml
 receivers:
@@ -89,9 +78,6 @@ receivers:
 
 exporters:
   otlphttp/splunk:
-    tls:
-      insecure_skip_verify: true
-    endpoint: "https://ingest.${env:SPLUNK_REALM}.observability.splunkcloud.com:443"
     traces_endpoint: "https://ingest.${env:SPLUNK_REALM}.observability.splunkcloud.com:443/v2/trace/otlp"
     metrics_endpoint: "https://ingest.${env:SPLUNK_REALM}.observability.splunkcloud.com:443/v2/datapoint/otlp"
     logs_endpoint: "https://ingest.${env:SPLUNK_REALM}.observability.splunkcloud.com:443/v1/logs"
@@ -114,7 +100,11 @@ service:
       exporters: [otlphttp/splunk]
 ```
 
-For a JSON secret, reference the JSON key after `#`:
+This configuration keeps the local OTLP receiver, Lambda Telemetry API receiver,
+and Splunk traces, metrics, and logs pipelines. The only token-specific value is
+the `X-SF-TOKEN` header, which the Collector resolves from AWS Secrets Manager.
+
+If your secret value is JSON, reference the JSON key after `#`:
 
 ```yaml
 headers:
