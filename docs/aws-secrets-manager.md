@@ -32,6 +32,27 @@ provider pattern described here.
 
 ## How it works
 
+```mermaid
+flowchart LR
+  lambda["AWS Lambda execution environment"]
+  role["Lambda execution role"]
+  wrapper["Splunk OpenTelemetry runtime wrapper"]
+  collector["OpenTelemetry Collector Lambda extension"]
+  s3["Amazon S3 collector-config.yaml"]
+  secrets["AWS Secrets Manager access token"]
+  ingest["Splunk Observability Cloud ingest"]
+
+  lambda --> wrapper
+  lambda --> collector
+  lambda -. "assumes" .-> role
+  collector -- "reads OPENTELEMETRY_COLLECTOR_CONFIG_URI" --> s3
+  collector -- "resolves ${secretsmanager:...}" --> secrets
+  role -. "s3:GetObject" .-> s3
+  role -. "secretsmanager:GetSecretValue" .-> secrets
+  wrapper -- "OTLP telemetry to localhost" --> collector
+  collector -- "exports with X-SF-TOKEN header" --> ingest
+```
+
 1. AWS Lambda creates an execution environment and provides temporary
    credentials for the Lambda execution role.
 2. The Splunk OpenTelemetry Collector extension starts.
@@ -135,6 +156,10 @@ The Collector S3 configuration provider supports virtual-hosted-style S3 URIs:
 s3://<bucket-name>.s3.<aws-region>.amazonaws.com/collector-config.yaml
 ```
 
+Do not use the shorthand form `s3://<bucket-name>/collector-config.yaml` for
+AWS S3. The Collector S3 configuration provider expects the virtual-hosted-style
+URI shown above for AWS S3.
+
 ## Configure the Lambda function
 
 Set `OPENTELEMETRY_COLLECTOR_CONFIG_URI` to the S3 URI and remove
@@ -167,6 +192,19 @@ by the local Collector.
 The Lambda execution role needs permission to read the S3 configuration object
 and the secret.
 
+The S3 permission must be granted to the Lambda execution role that runs the
+function. For an S3 config URI such as:
+
+```text
+s3://<bucket-name>.s3.<aws-region>.amazonaws.com/collector-config.yaml
+```
+
+the IAM resource ARN is:
+
+```text
+arn:aws:s3:::<bucket-name>/collector-config.yaml
+```
+
 For AWS SAM, you can use policy templates:
 
 ```yaml
@@ -197,6 +235,10 @@ Policies:
 If the S3 object or secret uses a customer managed AWS KMS key, also grant
 `kms:Decrypt` for that key.
 
+If the S3 bucket is in a different AWS account than the Lambda function, the
+Lambda execution role needs an identity-based policy that allows `s3:GetObject`,
+and the bucket policy must allow that role to read the object.
+
 ## Validate the deployment
 
 After deploying the function:
@@ -226,6 +268,23 @@ If telemetry does not arrive:
   realm.
 - Verify that the secret value contains only the Splunk access token, or that
   the JSON key in the `${secretsmanager:...#key}` placeholder is correct.
+
+If the logs contain `AccessDenied` for `s3:GetObject`, add an identity-based IAM
+policy to the Lambda execution role for the exact S3 object ARN. For example,
+`s3://ritvick.s3.us-west-2.amazonaws.com/collector-config.yaml` requires
+`s3:GetObject` on `arn:aws:s3:::ritvick/collector-config.yaml`.
+
+If the logs contain `SPLUNK_REALM is not set`, set `SPLUNK_REALM` to the target
+Splunk Observability Cloud realm, such as `us1`. The Secrets Manager value
+replaces only the access token header; the Collector still needs a realm or
+explicit exporter endpoints to know where to send telemetry.
+
+If the logs contain `splunk-extension-wrapper` errors, check whether the
+separate Splunk Lambda metrics extension layer is attached. This document
+configures the OpenTelemetry Collector exporter token. It does not configure the
+standalone Splunk metrics extension, which has its own authentication path. To
+validate this Collector pattern, test with the language layer and Collector
+layer only, or configure the metrics extension separately.
 
 Do not log the resolved access token while troubleshooting.
 
