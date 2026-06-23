@@ -36,6 +36,8 @@ For complete instructions on how to get started with the Splunk OpenTelemetry La
 
 If you're using the SignalFx Tracing Library for Node and want to migrate to the Splunk Distribution of OpenTelemetry Node, see [Migrate from SignalFx Lambda wrappers to Splunk OpenTelemetry Lambda Layer](https://quickdraw.splunk.com/redirect/?product=Observability&version=current&location=aws.lambda.migrate) in the official documentation.
 
+For Lambda functions that need more visibility than automatic instrumentation provides, see [Manually instrument heavy Lambda workloads](./docs/manual-instrumentation.md).
+
 ## Troubleshooting
 
 For troubleshooting issues with the Splunk OpenTelemetry Lambda, see [Troubleshoot the Splunk OpenTelemetry Lambda Layer](https://quickdraw.splunk.com/redirect/?product=Observability&version=current&location=aws.lambda.tshoot).
