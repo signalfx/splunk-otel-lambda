@@ -3,25 +3,31 @@
 DISTRO_DIR=build
 SOURCES_DIR=otel/otel_sdk
 OTEL_PYTHON_DIR=../opentelemetry-lambda/python/src
+SPLUNK_OTEL_VERSION=2.11.0
+OTEL_SDK_VERSION=1.42.1
+OTEL_INSTRUMENTATION_VERSION=0.63b1
+PYTHON_RUNTIME=python3.10
 
 echo "Modify dependencies and script for Splunk integration"
 pushd "$OTEL_PYTHON_DIR"
 
 cd "$SOURCES_DIR"
-sed -i 's/^opentelemetry-distro.*/splunk-opentelemetry[all]==2.10.1/g' requirements.txt
+sed -i "s/^opentelemetry-distro.*/splunk-opentelemetry[all]==${SPLUNK_OTEL_VERSION}/g" requirements.txt
 # Add the logging dependency below the opentelemetry-instrumentation dependency
-sed -i '/^opentelemetry-instrumentation==/a opentelemetry-instrumentation-logging==0.62b0' requirements.txt
+sed -i "/^opentelemetry-instrumentation==/a opentelemetry-instrumentation-logging==${OTEL_INSTRUMENTATION_VERSION}" requirements.txt
 # Even if these regexes do nothing, leave these lines in to make later updates easier
-sed -i 's/0.62b0/0.62b0/g' nodeps-requirements.txt
-sed -i 's/0.62b0/0.62b0/g' requirements.txt
-sed -i 's/1.41.0/1.41.0/g' requirements.txt
+sed -i "s/==0\\.[0-9][0-9]b[0-9]$/==${OTEL_INSTRUMENTATION_VERSION}/g" nodeps-requirements.txt
+sed -i "s/==0\\.[0-9][0-9]b[0-9]$/==${OTEL_INSTRUMENTATION_VERSION}/g" requirements.txt
+sed -i "s/==1\\.[0-9][0-9]\\.[0-9]$/==${OTEL_SDK_VERSION}/g" requirements.txt
 sed -i 's/^docker run --rm/docker run/g'  ../../build.sh
 sed -i '2isource /opt/splunk-default-config' otel-instrument
 
 cd ../..
 
-# FIXME no good way to specify python version requirement to pip; use 3.9 runtime/setuptools image
-sed -i 's/runtime=python3.*/runtime=python3.9/' otel/Dockerfile
+# FIXME no good way to specify python version requirement to pip; use the minimum
+# runtime supported by splunk-opentelemetry.
+sed -i "s/runtime=python3.*/runtime=${PYTHON_RUNTIME}/" otel/Dockerfile
+sed -i -E "s#build-python3\\.[0-9]+:latest(@sha256:[0-9a-f]+)?#build-${PYTHON_RUNTIME}:latest#" otel/Dockerfile
 echo "Modified Dockerfile:"
 cat otel/Dockerfile
 echo "----"

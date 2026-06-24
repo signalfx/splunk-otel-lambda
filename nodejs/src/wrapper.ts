@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { TextMapPropagator, diag, DiagConsoleLogger, isSpanContextValid, propagation, context as otelContext, TraceFlags } from "@opentelemetry/api";
+import { diag, DiagConsoleLogger, isSpanContextValid, propagation, context as otelContext, TraceFlags } from "@opentelemetry/api";
+import type { TextMapPropagator } from "@opentelemetry/api";
 import { NodeTracerConfig } from '@opentelemetry/sdk-trace-node';
-import { W3CBaggagePropagator, W3CTraceContextPropagator, CompositePropagator, diagLogLevelFromString, getStringFromEnv } from '@opentelemetry/core';
+import { CompositePropagator, diagLogLevelFromString, getStringFromEnv } from '@opentelemetry/core';
 import { detectResources, envDetector, processDetector } from '@opentelemetry/resources';
 
 import { awsLambdaDetector } from '@opentelemetry/resource-detector-aws';
@@ -26,7 +27,8 @@ import { AwsLambdaInstrumentation } from '@opentelemetry/instrumentation-aws-lam
 
 import { start } from '@splunk/otel';
 import { getInstrumentations } from '@splunk/otel/lib/instrumentations';
-import { AWSXRayPropagator } from '@opentelemetry/propagator-aws-xray';
+import { defaultPropagatorFactory } from '@splunk/otel/lib/tracing/options';
+import type { TracingOptions } from '@splunk/otel/lib/tracing/types';
 import { AWSXRayLambdaPropagator } from '@opentelemetry/propagator-aws-xray-lambda';
 
 
@@ -131,58 +133,44 @@ async function initializeProvider() {
     resource,
     forceFlushTimeoutMillis,
   };
-  propagation.setGlobalPropagator(getPropagator());
   start({
     tracing: {
       tracerConfig: tracerConfig,
       instrumentations: instrumentations,
+      propagatorFactory: getPropagator,
     },
   })
 }
 
-const propagatorMap = new Map<string, () => TextMapPropagator>([
-  ['tracecontext', () => new W3CTraceContextPropagator()],
-  ['baggage', () => new W3CBaggagePropagator()],
-  ['xray', () => new AWSXRayPropagator()],
-  ['xray-lambda', () => new AWSXRayLambdaPropagator()],
-]);
+function getPropagator(options: TracingOptions): TextMapPropagator {
+  const defaultPropagator = defaultPropagatorFactory(options);
+  const propagatorsFromEnv = getPropagatorsFromEnv();
 
-function getPropagator(): TextMapPropagator {
-  if (
-    process.env.OTEL_PROPAGATORS == null ||
-    process.env.OTEL_PROPAGATORS.trim() === ''
-  ) {
-    return new CompositePropagator({
-      propagators: [
-        new W3CTraceContextPropagator(),
-        new W3CBaggagePropagator(),
-      ],
-    });
+  if (!propagatorsFromEnv.includes('xray-lambda')) {
+    return defaultPropagator;
   }
-  const propagatorsFromEnv = Array.from(
+
+  return new CompositePropagator({
+    propagators: [
+      defaultPropagator,
+      new AWSXRayLambdaPropagator(),
+    ],
+  });
+}
+
+function getPropagatorsFromEnv(): string[] {
+  const propagators = process.env.OTEL_PROPAGATORS || '';
+
+  if (propagators.trim() === '') {
+    return [];
+  }
+  return Array.from(
     new Set(
-      process.env.OTEL_PROPAGATORS?.split(',').map(value =>
+      propagators.split(',').map(value =>
         value.toLowerCase().trim(),
       ),
     ),
   );
-  const propagators = propagatorsFromEnv.flatMap(propagatorName => {
-    if (propagatorName === 'none') {
-      diag.info(
-        'Not selecting any propagator for value "none" specified in the environment variable OTEL_PROPAGATORS',
-      );
-      return [];
-    }
-    const propagatorFactoryFunction = propagatorMap.get(propagatorName);
-    if (propagatorFactoryFunction == null) {
-      diag.warn(
-        `Invalid propagator "${propagatorName}" specified in the environment variable OTEL_PROPAGATORS`,
-      );
-      return [];
-    }
-    return propagatorFactoryFunction();
-  });
-  return new CompositePropagator({ propagators });
 }
 
 initializeProvider()

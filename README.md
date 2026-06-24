@@ -36,6 +36,8 @@ For complete instructions on how to get started with the Splunk OpenTelemetry La
 
 If you're using the SignalFx Tracing Library for Node and want to migrate to the Splunk Distribution of OpenTelemetry Node, see [Migrate from SignalFx Lambda wrappers to Splunk OpenTelemetry Lambda Layer](https://quickdraw.splunk.com/redirect/?product=Observability&version=current&location=aws.lambda.migrate) in the official documentation.
 
+For Lambda functions that need more visibility than automatic instrumentation provides, see [Manually instrument heavy Lambda workloads](./docs/manual-instrumentation.md).
+
 To keep the Splunk Observability Cloud access token out of Lambda environment variables when using the local Collector, see [Using AWS Secrets Manager with the OpenTelemetry Collector Lambda Extension](./docs/aws-secrets-manager.md).
 
 ## Troubleshooting
