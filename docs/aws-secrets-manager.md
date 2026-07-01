@@ -25,11 +25,6 @@ Collector extension starts and resolves its configuration during Lambda
 initialization, before handler code runs. Handler code cannot reliably override
 the header used by the local Collector.
 
-If the local Collector is disabled and the language SDK exports directly to
-Splunk Observability Cloud, configure the OTLP exporter headers before the SDK
-starts. That direct-export path is separate from the Collector configuration
-provider pattern described here.
-
 ## How it works
 
 ```mermaid
