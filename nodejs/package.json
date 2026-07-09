@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "node-prune": "^1.0.2",
-    "typescript": "6.0"
+    "typescript": "7.0"
   },
   "dependencies": {
     "@opentelemetry/instrumentation-aws-lambda": "0.67.0",
