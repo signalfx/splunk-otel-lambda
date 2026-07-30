@@ -32,7 +32,7 @@
     "@opentelemetry/instrumentation-aws-lambda": "0.67.0",
     "@opentelemetry/propagator-aws-xray-lambda": "0.56.0",
     "@opentelemetry/resource-detector-aws": "2.20.0",
-    "@opentelemetry/sdk-trace-node": "2.9.0",
+    "@opentelemetry/sdk-trace-node": "2.10.0",
     "@splunk/otel": "4.10.0"
   }
 }
