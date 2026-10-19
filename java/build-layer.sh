@@ -28,6 +28,9 @@ echo "Preparing Splunk layer"
 cd $DISTRO_DIR
 unzip -qo opentelemetry-javawrapper-layer.zip
 rm opentelemetry-javawrapper-layer.zip
+# Upstream also emits a tar.gz release artifact with the same layer contents.
+# Drop it here so it is not embedded as a duplicate inside the Splunk layer ZIP.
+rm -f opentelemetry-javawrapper-layer.tar.gz
 sed -i '2isource /opt/splunk-default-config' otel-handler
 sed -i '2isource /opt/splunk-default-config' otel-stream-handler
 sed -i '2isource /opt/splunk-default-config' otel-proxy-handler
