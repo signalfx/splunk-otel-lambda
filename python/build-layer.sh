@@ -3,9 +3,9 @@
 DISTRO_DIR=build
 SOURCES_DIR=otel/otel_sdk
 OTEL_PYTHON_DIR=../opentelemetry-lambda/python/src
-SPLUNK_OTEL_VERSION=2.11.0
-OTEL_SDK_VERSION=1.42.1
-OTEL_INSTRUMENTATION_VERSION=0.63b1
+SPLUNK_OTEL_VERSION=2.13.2
+OTEL_SDK_VERSION=1.45.1
+OTEL_INSTRUMENTATION_VERSION=0.66b1
 PYTHON_RUNTIME=python3.10
 
 echo "Modify dependencies and script for Splunk integration"
