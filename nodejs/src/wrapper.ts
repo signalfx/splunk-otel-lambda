@@ -16,7 +16,6 @@
 
 import { diag, DiagConsoleLogger, isSpanContextValid, propagation, context as otelContext, TraceFlags } from "@opentelemetry/api";
 import type { TextMapPropagator } from "@opentelemetry/api";
-import { NodeTracerConfig } from '@opentelemetry/sdk-trace-node';
 import { CompositePropagator, diagLogLevelFromString, getStringFromEnv } from '@opentelemetry/core';
 import { detectResources, envDetector, processDetector } from '@opentelemetry/resources';
 
@@ -129,13 +128,12 @@ async function initializeProvider() {
   const resource = detectResources({
     detectors: [awsLambdaDetector, envDetector, processDetector],
   });
-  const tracerConfig: NodeTracerConfig = {
-    resource,
-    forceFlushTimeoutMillis,
-  };
   start({
     tracing: {
-      tracerConfig: tracerConfig,
+      tracerConfig: {
+        resource,
+        forceFlushTimeoutMillis,
+      },
       instrumentations: instrumentations,
       propagatorFactory: getPropagator,
     },
